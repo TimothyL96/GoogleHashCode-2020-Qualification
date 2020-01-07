@@ -32,7 +32,7 @@ var wg sync.WaitGroup
 // 3. Update ReadFirstLine and ReadNextData according to the struct defined
 // 4. Update WriteFirstLine and WriteData according to the required output
 // 5. In algorithm.go :
-//      a. Update calcScore with calculation
+//      a. Update calcScore with score calculation
 //      b. Write your algorithm in func algorithm1()
 //      c. Optionally, add/remove algorithm and in main.go,
 //          update "func runDataSet(string)" to add/change the algorithm
@@ -173,7 +173,7 @@ func (a *answer) writeData() string {
 
 // *************** END WRITE FILE METHOD *************** //
 
-/* DON'T HAVE TO TOUCH ANYTHING BELOW*/
+/* DON'T HAVE TO TOUCH ANYTHING BELOW UNLESS MODIFICATION REQUIRED */
 // Print the score of the problem.answers with file path
 func (p *problem) printScore(filePath string) {
 	fmt.Println("Score of", filePath, ":", p.score)
