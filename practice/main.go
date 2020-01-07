@@ -24,6 +24,7 @@ const (
 
 var wg sync.WaitGroup
 
+// ******************** INFO ******************** //
 // Steps:
 // 1. Update const above for directory path and folder name
 // 2. Update problem, problemData and answer struct below according to the question
@@ -42,17 +43,25 @@ var wg sync.WaitGroup
 //          `source.zip in prefixFilePath
 //      b. Output file:
 //          output file in prefixFilePath/output
+// * Submit early to verify your calcScore method is accurate
+
+// Library: Hover method name for more information
+// IntToString(int) - Convert integer to string and not to the ASCII representation
+// ******************** INFO ******************** //
 
 // The initial struct for the problem
-// Ex: Number of photos in the dataset file
+// Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
+	// DEFAULT
 	data    []problemData
 	answers []answer
 	score   int
+
+	// PROBLEM SPECIFIC
 }
 
 // Struct for the data
-// Ex: Number of tags in photo with ID 3
+// Ex: var nrOfTags - Number of tags in photo with ID 3
 type problemData struct {
 }
 
@@ -70,7 +79,7 @@ func main() {
 	var datasets string
 
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
-	// ************************* //
+	// **************** //
 
 	datasets += "A"
 	// datasets += "B"
@@ -78,7 +87,7 @@ func main() {
 	// datasets += "D"
 	// datasets += "E"
 
-	// ************************* //
+	// **************** //
 
 	// Automatically find dataset file name and run the algorithm
 	runDataSets(datasets)
@@ -111,7 +120,7 @@ func runDataSet(filePath string) {
 	wg.Done()
 }
 
-// ***** READ FILE METHOD ***** //
+// *************** READ FILE METHOD *************** //
 // Example data in line: 1 H cat
 // dataInput[0] represent 1
 // dataInput[1] represent H
@@ -130,13 +139,14 @@ func (p *problem) readFirstLine(dataInput []InputString) {
 func (d *problemData) readData(dataInput []InputString) {
 	// Store the data from dataInput to d of type problemData
 	// d will be stored to p.data[]
-	// Ex: d.orientation = dataInput[0].GetString()
-
+	// Ex:
+	// d.nrOfTags = dataInput[0].GetInt()
+	// d.orientation = dataInput[1].GetString()
 }
 
-// ***** END READ FILE METHOD ***** //
+// *************** END READ FILE METHOD *************** //
 
-// ***** WRITE FILE METHOD ***** //
+// *************** WRITE FILE METHOD *************** //
 // Write to file by returning the intended line
 // *Note - New line is automatically inserted
 
@@ -159,7 +169,7 @@ func (a *answer) writeData() string {
 	return str
 }
 
-// ***** END WRITE FILE METHOD ***** //
+// *************** END WRITE FILE METHOD *************** //
 
 /* DON'T HAVE TO TOUCH ANYTHING BELOW*/
 // Print the score of the problem.answers with file path

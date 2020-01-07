@@ -31,7 +31,7 @@ func DataSplit(str string, del string) []InputString {
 	return inputData
 }
 
-// IntToString converts integer to string and not to ASCII representation of the integer value
+// IntToString directly converts integer to string and not to ASCII representation of the integer value
 func IntToString(i int) string {
 	return strconv.Itoa(i)
 }
