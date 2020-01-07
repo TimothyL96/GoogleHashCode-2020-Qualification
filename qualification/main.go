@@ -12,7 +12,7 @@ import (
 
 const (
 	// Path for source code and such, should be updated before competition start
-	prefixFilePath = "C:\\Users\\Timothy\\go\\src\\github.com\\ttimt\\GoogleHashCode\\2020\\practice\\"
+	prefixFilePath = "C:\\Users\\Timothy\\go\\src\\github.com\\ttimt\\GoogleHashCode-2020-Qualification\\2020\\qualification\\"
 
 	// All folder names below should resides inside prefixFilePath above
 	//
