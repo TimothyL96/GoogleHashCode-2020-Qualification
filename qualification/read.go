@@ -11,7 +11,7 @@ import (
 //
 // Use GetInt() if expecting an integer and use GetString() vice versa
 
-// Read first line parameter gets the first line data from the file
+// Read first line gets the first line data from the file
 func (p *problem) readFirstLine(dataInput []InputString) {
 	// Store the data from dataInput to p of type problem accordingly
 	// Ex: p.nrOfPhotos = dataInput[0].GetInt()

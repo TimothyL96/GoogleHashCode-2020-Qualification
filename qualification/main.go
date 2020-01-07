@@ -20,7 +20,7 @@ const (
 	rwNewLine = "\n"
 	rwSpace   = " "
 
-	// What happens when you read/write first line, usually first line is different so no changes needed
+	// What happens when you read/write first line, usually first line is used so no changes needed
 	readFirstLine  = rwNewLine
 	writeFirstLine = rwNewLine
 
@@ -32,7 +32,7 @@ const (
 	// In 2019 slide show qualification problem is using rwNewLine.
 	// Ex:
 	// H 2 cat beach
-	// V 1 dog
+	// V 3 dog green garden
 	readOtherLines = rwNewLine
 
 	// What is the delimiter for separating data when writing to new line
@@ -103,6 +103,7 @@ func main() {
 	//
 	// To run single/few specific datasets if above doesn't work, manually enter file names:
 	// Add file path below as required (Uncomment lines below):
+	//
 	// filePath := []string{
 	// 	"xxx.txt",
 	// 	"yyy.txt", // Add a comma at the last line

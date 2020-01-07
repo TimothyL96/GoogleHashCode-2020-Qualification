@@ -1,4 +1,5 @@
 // ******************** INFO ******************** //
+//
 // Steps:
 // 1. In main.go, update const above for directory path and folder name
 // 2. In main.go, update problem, problemData and answer struct according to the question
@@ -19,7 +20,8 @@
 //      b. Output file:
 //          output file in prefixFilePath/output
 // * Submit early to verify your calcScore method is accurate
-
+//
+//
 // LIBRARY: Hover method name for more information
 // func IntToString(int) string - Convert integer to string and not to the ASCII representation
 //
