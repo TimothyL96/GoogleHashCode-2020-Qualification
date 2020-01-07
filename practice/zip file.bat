@@ -1,1 +1,2 @@
-7z a source.zip stdlib/* main.go algorithm.go 
+cd ../
+7z a practice/source.zip stdlib/* practice/main.go practice/algorithm.go 

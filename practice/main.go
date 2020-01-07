@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	. "github.com/ttimt/GoogleHashCode/2020/stdlib"
+	. "../stdlib"
 )
 
 const (
@@ -137,6 +137,7 @@ func (p *problem) printScore(filePath string) {
 	fmt.Println("Score of", filePath, ":", p.score)
 }
 
+// test
 func errorCheck(err error) {
 	if err != nil && err != io.EOF {
 		panic(err)
