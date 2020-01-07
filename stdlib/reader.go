@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"bufio"
+	"io"
 	"os"
 )
 
@@ -12,6 +13,8 @@ type Reader struct {
 	ioReader *bufio.Reader
 	Data     []InputString
 	Err      error
+	ID       int
+	lastRead bool
 }
 
 // NewReader returns a new reader for reading dataset file
@@ -32,10 +35,11 @@ func NewReader(filePath string) (*Reader, error) {
 }
 
 // ReadFirstLine read first line of file that usually initialize the dataset problem
-func (r *Reader) ReadFirstLine() bool {
-	firstLine, err := r.ioReader.ReadString('\n')
+func (r *Reader) ReadFirstLine(del byte) bool {
+	firstLine, err := r.ioReader.ReadString(del)
 	if err != nil {
-		r.file.Close()
+		_ = r.file.Close()
+		r.Err = err
 		return false
 	}
 
@@ -45,14 +49,31 @@ func (r *Reader) ReadFirstLine() bool {
 }
 
 // ReadNextData will read next line of data
-func (r *Reader) ReadNextData() bool {
-	line, err := r.ioReader.ReadString('\n')
-	if err != nil {
-		r.file.Close()
+func (r *Reader) ReadNextData(del byte) bool {
+	if r.lastRead {
 		return false
+	}
+
+	line, err := r.ioReader.ReadString(del)
+
+	if err != nil {
+		if err == io.EOF {
+			r.lastRead = true
+		} else {
+			_ = r.file.Close()
+			r.Err = err
+			return false
+		}
 	}
 
 	r.Data = DataSplit(line, " ")
 
 	return true
+}
+
+// GetNewID retrieves a new ID for the problem data
+func (r *Reader) GetNewID() int {
+	r.ID++
+
+	return r.ID - 1
 }

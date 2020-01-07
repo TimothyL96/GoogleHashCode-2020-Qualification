@@ -29,8 +29,8 @@ func NewWriter(filePath string) *Writer {
 }
 
 // WriteLine write a single line to the file
-func (w *Writer) WriteLine(str string) error {
-	count, err := w.ioWriter.WriteString(str + "\n")
+func (w *Writer) WriteLine(str string, del string) error {
+	count, err := w.ioWriter.WriteString(str + del)
 
 	if count < len(str+"\n") || err != nil {
 		w.CloseFile()
@@ -44,5 +44,5 @@ func (w *Writer) WriteLine(str string) error {
 
 // CloseFile close the file at the end of writing
 func (w *Writer) CloseFile() {
-	w.file.Close()
+	_ = w.file.Close()
 }
