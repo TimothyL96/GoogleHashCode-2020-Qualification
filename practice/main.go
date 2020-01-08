@@ -88,11 +88,11 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	datasets += "A"
-	datasets += "B"
-	datasets += "C"
+	// datasets += "A"
+	// datasets += "B"
+	// datasets += "C"
 	datasets += "D"
-	datasets += "E"
+	// datasets += "E"
 
 	// For more datasets, simply add new line above as needed, according to first character of dataset file
 	// Ex:  datasets += "F"
@@ -132,7 +132,8 @@ func runDataSet(filePath string) {
 
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed
-	p.algorithm1(filePath)
+	// p.algorithm1(filePath)
+	p.algorithm2()
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()

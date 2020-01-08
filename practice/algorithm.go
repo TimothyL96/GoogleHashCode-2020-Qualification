@@ -1,10 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 )
 
 // Main algorithm
+//
+// To sort:
+// sort.Slice(p.data, func(i, j int) bool {
+// 	return p.data[i].ID < p.data[j].ID
+// })
 func (p *problem) algorithm1(filePath string) {
 	assignedSlice := 0
 	cachePrevious := 0
@@ -159,6 +165,62 @@ func (p *problem) algorithm1(filePath string) {
 			}
 		}
 	}
+}
+
+func (p *problem) algorithm2() {
+	sort.Slice(p.data, func(i, j int) bool {
+		return p.data[i].nrOfSlices >= p.data[j].nrOfSlices
+	})
+
+	newCur := p.data[1:]
+	maxScore, ans := p.recursive(0, 0, &p.data[0], newCur, make([]answer, 0), make([]answer, 0))
+	fmt.Println("Max score:", maxScore)
+	p.answers = ans
+}
+
+func (p *problem) recursive(currentScore int, maxScore int, pd *problemData, cur []problemData, curans, ans []answer) (int, []answer) {
+	if currentScore+pd.nrOfSlices <= p.maxPizzaSlices {
+		currentScore += pd.nrOfSlices
+		curans = append(ans, answer{pd})
+
+		if currentScore > maxScore {
+			ans = curans
+			maxScore = currentScore
+
+			fmt.Println("Current max score", maxScore)
+			if maxScore == p.maxPizzaSlices {
+				return maxScore, ans
+			}
+		}
+	} else {
+		return maxScore, ans
+	}
+
+	if cur == nil {
+		return maxScore, ans
+	}
+
+	for k := range cur {
+		newCur := []problemData(nil)
+		if len(cur) <= k+1 {
+			break
+		}
+		newCur = (cur)[k+1:]
+		maxScore, ans = p.recursive(currentScore, maxScore, &(cur)[k], newCur, curans, ans)
+
+		if currentScore > maxScore {
+			ans = curans
+			maxScore = currentScore
+
+			fmt.Println("Current max score 1", maxScore)
+		}
+
+		if maxScore == p.maxPizzaSlices {
+			break
+		}
+	}
+
+	return maxScore, ans
 }
 
 // Calculate answers score and store result in p.score
