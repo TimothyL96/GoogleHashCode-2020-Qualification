@@ -1,6 +1,11 @@
 package main
 
 // Main algorithm
+//
+// To sort:
+// sort.Slice(p.data, func(i, j int) bool {
+// 	return p.data[i].ID < p.data[j].ID
+// })
 func (p *problem) algorithm1() {
 
 }

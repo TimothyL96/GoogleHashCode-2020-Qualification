@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"bufio"
+	"io"
 	"os"
 )
 
@@ -18,6 +19,9 @@ func NewWriter(filePath string) *Writer {
 	if err != nil {
 		panic(err)
 	}
+
+	_ = file.Truncate(0)
+	_, _ = file.Seek(0, io.SeekStart)
 
 	// Create a writer
 	ioWriter := bufio.NewWriter(file)

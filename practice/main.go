@@ -132,7 +132,7 @@ func runDataSet(filePath string) {
 
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed
-	p.algorithm1()
+	p.algorithm1(filePath)
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()
