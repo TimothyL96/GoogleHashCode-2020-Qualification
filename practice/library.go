@@ -11,8 +11,8 @@ import (
 /* DON'T HAVE TO TOUCH ANYTHING BELOW UNLESS MODIFICATION REQUIRED */
 
 // Print the score of the problem.answers with file path
-func (p *problem) printScore(filePath string) {
-	fmt.Println("Score of", filePath, ":", p.score)
+func (p *problem) printScore() {
+	fmt.Println("Score of", p.filePath, ":", p.score)
 }
 
 // Run all datasets according to the input string
@@ -27,8 +27,8 @@ func runDataSets(datasets string) {
 }
 
 // Write to file with name "output_datasetFileName"
-func (p *problem) writeFile(filePath string) {
-	writer := NewWriter(prefixFilePath + prefixOutputFolderPath + "output_" + filePath)
+func (p *problem) writeFile() {
+	writer := NewWriter(prefixFilePath + prefixOutputFolderPath + "output_" + p.filePath)
 
 	err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
 	errorCheck(err)
@@ -43,8 +43,14 @@ func (p *problem) writeFile(filePath string) {
 
 // Read first line to problem struct and remaining lines of first to problemData struct
 func readFile(filePath string) *problem {
+	// Create a new problem instance
 	p := &problem{}
+	p.filePath = filePath
 
+	// Update the file path
+	filePath = prefixFilePath + prefixDatasetFolderPath + filePath
+
+	// Create a new reader
 	reader, err := NewReader(filePath)
 	errorCheck(err)
 

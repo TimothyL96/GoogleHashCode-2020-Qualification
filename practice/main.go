@@ -51,9 +51,10 @@ var wg sync.WaitGroup
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
 	// DEFAULT
-	data    []problemData
-	answers []answer
-	score   int
+	data     []problemData
+	answers  []answer
+	score    int
+	filePath string
 
 	// PROBLEM SPECIFIC FIELDS
 	maxPizzaSlices int
@@ -103,7 +104,7 @@ func main() {
 	// This will read ALL files in prefixDatasetFolderPath and run them as a dataset respectively
 	// Comment out line: "var datasets string", "datasets += "A" ...", and "runDataSets(datasets)"
 	//
-	// To run single/few specific datasets if above doesn't work, manually enter file names:
+	// To run single/few specific datasets, manually enter file names:
 	// Add file path below as required (Uncomment lines below):
 	//
 	// filePath := []string{
@@ -128,7 +129,7 @@ func main() {
 func runDataSet(filePath string) {
 	// Read data from the file path and return to p as problem struct
 	// Remember to update readFirstLine() and readData()
-	p := readFile(prefixFilePath + prefixDatasetFolderPath + filePath)
+	p := readFile(filePath)
 
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed
@@ -139,11 +140,11 @@ func runDataSet(filePath string) {
 	p.calcScore()
 
 	// Print the score out
-	p.printScore(filePath)
+	p.printScore()
 
 	// Write to file:
 	// Remember to update writeFirstLine() and writeData()
-	p.writeFile(filePath)
+	p.writeFile()
 
 	// Indicate the goroutine has finished its task
 	wg.Done()

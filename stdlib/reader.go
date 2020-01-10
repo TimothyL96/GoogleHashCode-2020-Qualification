@@ -51,6 +51,7 @@ func (r *Reader) ReadFirstLine(del byte) bool {
 // ReadNextData will read next line of data
 func (r *Reader) ReadNextData(del byte) bool {
 	if r.lastRead {
+		_ = r.file.Close()
 		return false
 	}
 

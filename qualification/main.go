@@ -51,9 +51,10 @@ var wg sync.WaitGroup
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
 	// DEFAULT
-	data    []problemData
-	answers []answer
-	score   int
+	data     []problemData
+	answers  []answer
+	score    int
+	filePath string
 
 	// PROBLEM SPECIFIC FIELDS
 
@@ -126,7 +127,7 @@ func main() {
 func runDataSet(filePath string) {
 	// Read data from the file path and return to p as problem struct
 	// Remember to update readFirstLine() and readData()
-	p := readFile(prefixFilePath + prefixDatasetFolderPath + filePath)
+	p := readFile(filePath)
 
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed
@@ -136,11 +137,11 @@ func runDataSet(filePath string) {
 	p.calcScore()
 
 	// Print the score out
-	p.printScore(filePath)
+	p.printScore()
 
 	// Write to file:
 	// Remember to update writeFirstLine() and writeData()
-	p.writeFile(filePath)
+	p.writeFile()
 
 	// Indicate the goroutine has finished its task
 	wg.Done()

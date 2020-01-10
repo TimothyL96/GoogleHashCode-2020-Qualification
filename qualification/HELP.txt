@@ -26,3 +26,18 @@
 // func IntToString(int) string - Convert integer to string and not to the ASCII representation
 //
 // ******************** INFO ******************** //
+
+TODO:
+Recursive template
+Read number of lines for a single problem data
+Read different types
+Ex:
+first line
+xx
+xx
+xx
+yy
+yy
+yy
+
+Write different types

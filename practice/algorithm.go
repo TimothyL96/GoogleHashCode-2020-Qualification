@@ -7,10 +7,11 @@ import (
 
 // Main algorithm
 //
-// To sort:
+// To sort p.data ID ascending :
 // sort.Slice(p.data, func(i, j int) bool {
 // 	return p.data[i].ID < p.data[j].ID
 // })
+//
 func (p *problem) algorithm1(filePath string) {
 	assignedSlice := 0
 	cachePrevious := 0
@@ -172,55 +173,45 @@ func (p *problem) algorithm2() {
 		return p.data[i].nrOfSlices >= p.data[j].nrOfSlices
 	})
 
-	newCur := p.data[1:]
-	maxScore, ans := p.recursive(0, 0, &p.data[0], newCur, make([]answer, 0), make([]answer, 0))
-	fmt.Println("Max score:", maxScore)
+	// Run recursive in a loop
+	maxScore := 0
+	ans := p.recursive(p.data, make([]problemData, 0), p.data[0], make([]answer, 0), &maxScore, 0)
 	p.answers = ans
 }
 
-func (p *problem) recursive(currentScore int, maxScore int, pd *problemData, cur []problemData, curans, ans []answer) (int, []answer) {
-	if currentScore+pd.nrOfSlices <= p.maxPizzaSlices {
-		currentScore += pd.nrOfSlices
-		curans = append(ans, answer{pd})
+// Default recursive algorithm
+func (p *problem) recursive(data, curData []problemData, curPD problemData, maxData []answer, maxScore *int, currentScore int) []answer {
+	if *maxScore > 999999995 {
+		return maxData
+	}
 
-		if currentScore > maxScore {
-			ans = curans
-			maxScore = currentScore
-
-			fmt.Println("Current max score", maxScore)
-			if maxScore == p.maxPizzaSlices {
-				return maxScore, ans
+	if curPD.nrOfSlices+currentScore <= p.maxPizzaSlices {
+		currentScore += curPD.nrOfSlices
+		curData = append(curData, curPD)
+	}
+	// fmt.Println("Cur data", curPD.ID, "slice:", curPD.nrOfSlices)
+	fmt.Println("cur max score", *maxScore)
+	if len(data) <= 1 {
+		if currentScore > *maxScore {
+			*maxScore = currentScore
+			var newMax []answer
+			for k := range curData {
+				newMax = append(newMax, answer{problemData: &curData[k]})
 			}
+			return newMax
 		}
-	} else {
-		return maxScore, ans
+
+		if *maxScore > 999999995 {
+			p.writeFile()
+		}
+		return maxData
 	}
 
-	if cur == nil {
-		return maxScore, ans
+	for k := range data[1:] {
+		maxData = p.recursive(data[k+1:], curData, data[k+1], maxData, maxScore, currentScore)
 	}
 
-	for k := range cur {
-		newCur := []problemData(nil)
-		if len(cur) <= k+1 {
-			break
-		}
-		newCur = (cur)[k+1:]
-		maxScore, ans = p.recursive(currentScore, maxScore, &(cur)[k], newCur, curans, ans)
-
-		if currentScore > maxScore {
-			ans = curans
-			maxScore = currentScore
-
-			fmt.Println("Current max score 1", maxScore)
-		}
-
-		if maxScore == p.maxPizzaSlices {
-			break
-		}
-	}
-
-	return maxScore, ans
+	return maxData
 }
 
 // Calculate answers score and store result in p.score
