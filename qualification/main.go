@@ -132,12 +132,17 @@ func runDataSet(filePath string) {
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed
 	p.algorithm1()
+	// p.algorithm2()
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()
 
 	// Print the score out
 	p.printScore()
+
+	// Print ID of answers out in sequence
+	// Use it for debugging
+	// p.printAnswer()
 
 	// Write to file:
 	// Remember to update writeFirstLine() and writeData()

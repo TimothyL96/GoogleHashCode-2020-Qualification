@@ -19,11 +19,32 @@ func (p *problem) readFirstLine(dataInput []InputString) {
 }
 
 // Read lines of data excluding first line from the file
-func (d *problemData) readData(dataInput []InputString) {
+func (d *problemData) readData(dataInput []InputString, reader *Reader) {
 	// Store the data from dataInput to d of type problemData
 	// d will be stored to p.data[]
 	// Ex:
 	// d.nrOfTags = dataInput[0].GetInt()
 	// d.orientation = dataInput[1].GetString()
+	//
+	// Ex: To create a map to store a set of tags in a single line in the file
+	// d.ID = make(map[int]struct{})
+	// for _, v := range dataInput[2:] {
+	// 	d.ID[v] = struct {}{}
+	// }
+	//
+	//
+	// If there are more than 1 row per data, first get the number of rows required:
+	// Ex: d.nrOfRows = dataInput[0].GetInt()
+	//
+	// Then traverse through the rows and read with	reader.ReadNextData(readOtherLines[0])
+	// where read other lines [0] is the delimiter for 1 single line like '\n' or ' '
+	// And make sure all data from dataInput is retrieved before calling the loop
+	//
+	// Ex:
+	// for i := 0; i < d.nrOfRows; i++ {
+	//      reader.ReadNextData(readOtherLines[0])
+	//      errorCheck(reader.Err)
+	//      d.coordinate[0] = reader.Data[0].GetString() // or create and assign to the proper struct
+	// 	}
 
 }

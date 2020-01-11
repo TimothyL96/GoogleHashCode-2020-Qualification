@@ -20,7 +20,7 @@ func (p *problem) readFirstLine(dataInput []InputString) {
 }
 
 // Read lines of data excluding first line from the file
-func (d *problemData) readData(dataInput []InputString) {
+func (d *problemData) readData(dataInput []InputString, reader *Reader) {
 	// Store the data from dataInput to d of type problemData
 	// d will be stored to p.data[]
 	// Ex:

@@ -15,6 +15,12 @@ func (p *problem) printScore() {
 	fmt.Println("Score of", p.filePath, ":", p.score)
 }
 
+// Calculate answers score and store result in p.score
+// Access answer struct with p.answers (type is a slice of answer)
+func (p *problem) calcScore() {
+	p.score = calcScore(p.answers)
+}
+
 // Run all datasets according to the input string
 func runDataSets(datasets string) {
 	wg.Add(len(datasets))
@@ -66,7 +72,7 @@ func readFile(filePath string) *problem {
 
 		var d problemData
 
-		d.readData(reader.Data)
+		d.readData(reader.Data, reader)
 		d.ID = reader.GetNewID()
 
 		p.data = append(p.data, d)

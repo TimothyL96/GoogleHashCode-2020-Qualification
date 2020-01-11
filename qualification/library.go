@@ -15,6 +15,20 @@ func (p *problem) printScore() {
 	fmt.Println("Score of", p.filePath, ":", p.score)
 }
 
+// Calculate answers score and store result in p.score
+func (p *problem) calcScore() {
+	p.score = calcScore(p.answers)
+}
+
+// Print answer out in sequence
+func (p *problem) printAnswer() {
+	fmt.Println("Answer:")
+	for k := range p.answers {
+		fmt.Print(p.answers[k].ID, " ")
+	}
+	fmt.Println()
+}
+
 // Run all datasets according to the input string
 func runDataSets(datasets string) {
 	wg.Add(len(datasets))
@@ -66,26 +80,13 @@ func readFile(filePath string) *problem {
 
 		var d problemData
 
-		d.readData(reader.Data)
+		d.readData(reader.Data, reader)
 		d.ID = reader.GetNewID()
 
 		p.data = append(p.data, d)
 	}
 
 	return p
-}
-
-func getAllFileName() []string {
-	files, err := ioutil.ReadDir(prefixFilePath + prefixDatasetFolderPath)
-	errorCheck(err)
-
-	var datasetFilesName []string
-
-	for k := range files {
-		datasetFilesName = append(datasetFilesName, strings.ToLower(files[k].Name()))
-	}
-
-	return datasetFilesName
 }
 
 // Get file name according to the first character of file (A, B, C etc...)
@@ -115,4 +116,18 @@ func ReadFileSpecial() {
 		wg.Add(1)
 		runDataSet(s)
 	}
+}
+
+// In case auto file name retrieval does not work
+func getAllFileName() []string {
+	files, err := ioutil.ReadDir(prefixFilePath + prefixDatasetFolderPath)
+	errorCheck(err)
+
+	var datasetFilesName []string
+
+	for k := range files {
+		datasetFilesName = append(datasetFilesName, strings.ToLower(files[k].Name()))
+	}
+
+	return datasetFilesName
 }

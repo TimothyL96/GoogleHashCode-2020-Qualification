@@ -14,30 +14,18 @@
 // 7. In main.go, update which dataset(s) to run concurrently in "func main()"
 // 8. Open terminal in prefixFilePath folder and check algorithm score with "go run ."
 // 9. When done, run "zip file.bat" located in prefixFilePath
-// 10. Submit to Judge System:
+// 10. Submit to Judge System in prefixFilePath/output:
 //      a. Source code:
-//          source.zip in prefixFilePath
+//          source.zip
 //      b. Output file:
-//          output file in prefixFilePath/output
+//          output files
 // * Submit early to verify your calcScore method is accurate
 //
 //
 // LIBRARY: Hover method name for more information
 // func IntToString(int) string - Convert integer to string and not to the ASCII representation
-//
+// func p.printAnswer() - Print ID of answers out in sequence
 // ******************** INFO ******************** //
 
 TODO:
 Recursive template
-Read number of lines for a single problem data
-Read different types
-Ex:
-first line
-xx
-xx
-xx
-yy
-yy
-yy
-
-Write different types

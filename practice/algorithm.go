@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"time"
 )
 
 // Main algorithm
@@ -12,7 +13,7 @@ import (
 // 	return p.data[i].ID < p.data[j].ID
 // })
 //
-func (p *problem) algorithm1(filePath string) {
+func (p *problem) algorithm1() {
 	assignedSlice := 0
 	cachePrevious := 0
 	cachePreviousPosition := 0
@@ -175,13 +176,20 @@ func (p *problem) algorithm2() {
 
 	// Run recursive in a loop
 	maxScore := 0
-	ans := p.recursive(p.data, make([]problemData, 0), p.data[0], make([]answer, 0), &maxScore, 0)
-	p.answers = ans
+	for k := range p.data {
+		fmt.Println("k:", k, time.Now().Format(time.Kitchen))
+		ans := p.recursive(p.data, make([]problemData, 0), p.data[k], make([]answer, 0), &maxScore, 0)
+
+		if calcScore(ans) > calcScore(p.answers) {
+			p.answers = ans
+		}
+	}
 }
 
 // Default recursive algorithm
 func (p *problem) recursive(data, curData []problemData, curPD problemData, maxData []answer, maxScore *int, currentScore int) []answer {
-	if *maxScore > 999999995 {
+	// Return if max reached
+	if *maxScore == p.maxPizzaSlices {
 		return maxData
 	}
 
@@ -189,8 +197,8 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 		currentScore += curPD.nrOfSlices
 		curData = append(curData, curPD)
 	}
-	// fmt.Println("Cur data", curPD.ID, "slice:", curPD.nrOfSlices)
-	fmt.Println("cur max score", *maxScore)
+
+	// fmt.Println("cur max score", *maxScore, "cur ID", curPD.ID)
 	if len(data) <= 1 {
 		if currentScore > *maxScore {
 			*maxScore = currentScore
@@ -201,9 +209,6 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 			return newMax
 		}
 
-		if *maxScore > 999999995 {
-			p.writeFile()
-		}
 		return maxData
 	}
 
@@ -214,12 +219,14 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 	return maxData
 }
 
-// Calculate answers score and store result in p.score
+// Calculate score from input
 // Access answer struct with p.answers (type is a slice of answer)
-func (p *problem) calcScore() {
-	p.score = 0
+func calcScore(answers []answer) int {
+	score := 0
 
-	for k := range p.answers {
-		p.score += p.answers[k].nrOfSlices
+	for k := range answers {
+		score += answers[k].nrOfSlices
 	}
+
+	return score
 }
