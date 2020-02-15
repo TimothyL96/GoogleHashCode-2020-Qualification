@@ -6,7 +6,10 @@
 //        c. Update problem, problemData and answer struct according to the question
 // 2. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
 // 3. In write.go, update WriteFirstLine and WriteData according to the required output
-// 4. In algorithm.go:
+// 4. If executing endless run,
+//        a. In main.go, update endlessRun = true
+//        b. In algorithm.go, update algorithmEndless()
+// 4. If normal run, in algorithm.go:
 //      a. Update calcScore with score calculation
 //      b. Write your algorithm in func algorithm1()
 //      c. Optionally, add/remove algorithm and in main.go,
