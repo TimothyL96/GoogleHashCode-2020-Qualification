@@ -18,12 +18,13 @@ func (p *problem) algorithm2() {
 }
 
 // Run recursive algorithm
-func (p *problem) runRecursive() {
+func (p *problem) algorithmRecursive() {
 	// p.recursive()
 }
 
 // Default recursive algorithm
 //
+// TODO
 func (p *problem) recursive(data, curData []problemData, curPD problemData, maxData []answer, maxScore *int, currentScore int) []answer {
 	// Return if max reached
 	if true { // *maxScore == p.maxPizzaSlices
@@ -64,6 +65,20 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 	}
 
 	return maxData
+}
+
+// Endless algorithm till max reached or interrupt signalled
+func (p *problem) algorithmEndless() {
+	// Ex:
+	// for p.score != p.maxPizzaSlices {
+	// 	p.algorithm2()
+	// 	p.calcScore()
+	// 	p.printScore()
+	// 	p.writeFile()
+
+	// Reset answer
+	p.answers = nil
+	// }
 }
 
 // Calculate score from input

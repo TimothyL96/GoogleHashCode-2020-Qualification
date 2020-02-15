@@ -171,6 +171,7 @@ func (p *problem) algorithm1() {
 	// Randomly remove 1 number and find a bigger number that does not exceed max
 }
 
+// Randomize and calculate algorithm
 func (p *problem) algorithm2() {
 	sort.Slice(p.data, func(i, j int) bool {
 		return p.data[i].nrOfSlices >= p.data[j].nrOfSlices
@@ -215,6 +216,17 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 	}
 
 	return maxData
+}
+
+// Endless algorithm till max reached or interrupt signalled
+func (p *problem) algorithmEndless() {
+	for p.score != p.maxPizzaSlices {
+		p.algorithm2()
+		p.calcScore()
+		p.printScore()
+		p.writeFile()
+		p.answers = nil
+	}
 }
 
 // Calculate score from input

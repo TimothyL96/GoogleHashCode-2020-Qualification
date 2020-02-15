@@ -47,6 +47,7 @@ const (
 )
 
 var wg sync.WaitGroup
+var endlessRun = false
 
 // The initial struct for the problem
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
@@ -87,6 +88,9 @@ type answer struct {
 
 func main() {
 	var datasets string
+
+	// Set whether to execute endless run
+	endlessRun = true
 
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
@@ -133,20 +137,24 @@ func runDataSet(filePath string) {
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
-	// Run the main algorithm - code it in algorithm.go
-	// Call and comment other algorithms as needed
-	// p.algorithm1()
-	p.algorithm2()
+	if !endlessRun {
+		// Run the main algorithm - code it in algorithm.go
+		// Call and comment other algorithms as needed
+		// p.algorithm1()
+		p.algorithm2()
 
-	// Calculate the score  - code it in algorithm.go
-	p.calcScore()
+		// Calculate the score  - code it in algorithm.go
+		p.calcScore()
 
-	// Print the score out
-	p.printScore()
+		// Print the score out
+		p.printScore()
 
-	// Write to file:
-	// Remember to update writeFirstLine() and writeData()
-	p.writeFile()
+		// Write to file:
+		// Remember to update writeFirstLine() and writeData()
+		p.writeFile()
+	} else {
+		p.algorithmEndless()
+	}
 
 	// Indicate the goroutine has finished its task
 	wg.Done()
