@@ -95,11 +95,11 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	// datasets += "A"
-	// datasets += "B"
-	// datasets += "C"
+	datasets += "A"
+	datasets += "B"
+	datasets += "C"
 	datasets += "D"
-	// datasets += "E"
+	datasets += "E"
 
 	// For more datasets, simply add new line above as needed, according to first character of dataset file
 	// Ex:  datasets += "F"

@@ -67,7 +67,8 @@ type problem struct {
 // Ex: var nrOfTags - Number of tags in photo with ID 3
 type problemData struct {
 	// DEFAULT
-	ID int
+	ID       int
+	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
 
