@@ -9,10 +9,13 @@ import (
 
 // Write first line to the submission file
 // Example: Number of photos in a slide show (str = IntToString(len(p.answers)))
-func (p *problem) writeFirstLine() string {
-	str := IntToString(len(p.answers))
+//
+// If more than 1 variables per line:
+// Ex: str := IntToString(a.ID) + " " + IntToString(a.Orientation)
+func (p *problem) writeFirstLine() (str string) {
+	str = IntToString(len(p.answers))
 
-	return str
+	return
 }
 
 // Write remaining data to the file
@@ -20,8 +23,13 @@ func (p *problem) writeFirstLine() string {
 // *Note - p.answers will be automatically traversed
 // Just indicate what to output per dataset
 // Example: Photos ID in a slide in sequence (str = IntToString(len(p.answer.ID)))
-func (a *answer) writeData() string {
-	str := IntToString(a.ID)
+//
+// If more than 1 variables per line:
+// Ex: str := IntToString(a.ID) + " " + IntToString(a.Orientation)
+//
+// Use IntToString to convert integers to string
+func (a *answer) writeData() (str string) {
+	str = IntToString(a.ID)
 
-	return str
+	return
 }

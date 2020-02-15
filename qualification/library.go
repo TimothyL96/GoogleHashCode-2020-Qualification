@@ -69,7 +69,7 @@ func readFile(filePath string) *problem {
 	errorCheck(err)
 
 	// Set starting ID
-	reader.ID = StartID
+	reader.ID = startID
 
 	reader.ReadFirstLine(readFirstLine[0])
 	errorCheck(reader.Err)
@@ -111,7 +111,7 @@ func errorCheck(err error) {
 }
 
 // In case auto file name retrieval does not work
-func ReadFileSpecial() {
+func readFileSpecial() {
 	for _, s := range getAllFileName() {
 		wg.Add(1)
 		runDataSet(s)

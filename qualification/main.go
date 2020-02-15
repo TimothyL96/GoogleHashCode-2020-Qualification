@@ -42,7 +42,7 @@ const (
 
 	// Starting ID for problem data struct
 	// Ex: Photos in 2019 qualification problem, type of pizzas in 2020 practice problem
-	StartID = 0
+	startID = 0
 )
 
 var wg sync.WaitGroup
@@ -93,14 +93,19 @@ func main() {
 	datasets += "D"
 	datasets += "E"
 
+	// **************** //
 	// For more datasets, simply add new line above as needed, according to first character of dataset file
 	// Ex:  datasets += "F"
 	//
 	// If it doesn't work / in case datasets are not named a_xxx, b_xxx ....
 	// Use (Uncomment line below):
-	// ReadFileSpecial()
+	// readFileSpecial()
 	// This will read ALL files in prefixDatasetFolderPath and run them as a dataset respectively
-	// Comment out line: "var datasets string", "datasets += "A" ...", and "runDataSets(datasets)"
+	// Comment out line:
+	// "var datasets string"
+	// "datasets += "A"
+	// ...
+	// "runDataSets(datasets)"
 	//
 	// To run single/few specific datasets if above doesn't work, manually enter file names:
 	// Add file path below as required (Uncomment lines below):
@@ -133,6 +138,7 @@ func runDataSet(filePath string) {
 	// Call and comment other algorithms as needed
 	p.algorithm1()
 	// p.algorithm2()
+	// p.runRecursive()
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()
@@ -141,7 +147,7 @@ func runDataSet(filePath string) {
 	p.printScore()
 
 	// Print ID of answers out in sequence
-	// Use it for debugging
+	// Use it for DEBUGGING
 	// p.printAnswer()
 
 	// Write to file:

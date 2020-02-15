@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
 	"sort"
 	"time"
 )
@@ -167,6 +167,8 @@ func (p *problem) algorithm1() {
 			}
 		}
 	}
+
+	// Randomly remove 1 number and find a bigger number that does not exceed max
 }
 
 func (p *problem) algorithm2() {
@@ -174,16 +176,12 @@ func (p *problem) algorithm2() {
 		return p.data[i].nrOfSlices >= p.data[j].nrOfSlices
 	})
 
-	// Run recursive in a loop
-	maxScore := 0
-	for k := range p.data {
-		fmt.Println("k:", k, time.Now().Format(time.Kitchen))
-		ans := p.recursive(p.data, make([]problemData, 0), p.data[k], make([]answer, 0), &maxScore, 0)
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(p.data), func(i, j int) {
+		p.data[i], p.data[j] = p.data[j], p.data[i]
+	})
 
-		if calcScore(ans) > calcScore(p.answers) {
-			p.answers = ans
-		}
-	}
+	p.algorithm1()
 }
 
 // Default recursive algorithm

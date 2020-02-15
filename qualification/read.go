@@ -9,7 +9,8 @@ import (
 // dataInput[1] represent H
 // dataInput[2] represent cat
 //
-// Use GetInt() if expecting an integer and use GetString() vice versa
+// Use GetInt() if expecting an integer
+// and use GetString() vice versa
 
 // Read first line gets the first line data from the file
 func (p *problem) readFirstLine(dataInput []InputString) {
@@ -27,24 +28,24 @@ func (d *problemData) readData(dataInput []InputString, reader *Reader) {
 	// d.orientation = dataInput[1].GetString()
 	//
 	// Ex: To create a map to store a set of tags in a single line in the file
-	// d.ID = make(map[int]struct{})
+	// d.tags = make(map[int]struct{})
 	// for _, v := range dataInput[2:] {
-	// 	d.ID[v] = struct {}{}
+	// 	d.tags[v] = struct {}{}
 	// }
 	//
 	//
-	// If there are more than 1 row per data, first get the number of rows required:
+	// If there are more than 1 row/line per data, first get the number of rows required:
 	// Ex: d.nrOfRows = dataInput[0].GetInt()
 	//
 	// Then traverse through the rows and read with	reader.ReadNextData(readOtherLines[0])
-	// where read other lines [0] is the delimiter for 1 single line like '\n' or ' '
+	// where readOtherLines[0] ('\n') is the delimiter for 1 single line like '\n'
 	// And make sure all data from dataInput is retrieved before calling the loop
 	//
 	// Ex:
 	// for i := 0; i < d.nrOfRows; i++ {
-	//      reader.ReadNextData(readOtherLines[0])
-	//      errorCheck(reader.Err)
-	//      d.coordinate[0] = reader.Data[0].GetString() // or create and assign to the proper struct
-	// 	}
+	// 	reader.ReadNextData(readOtherLines[0])
+	// 	errorCheck(reader.Err)
+	// 	d.coordinate[0] = reader.Data[0].GetString() // or create and assign to the proper struct
+	// }
 
 }

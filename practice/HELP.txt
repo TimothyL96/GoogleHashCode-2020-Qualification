@@ -1,19 +1,20 @@
 // ******************** INFO ******************** //
 // Steps:
-// 1. In main.go, update const above for directory path and folder name
-// 2. In main.go, update problem, problemData and answer struct according to the question
-// 3. In main.go, verify readOtherLines and writeOtherLines is set with correct delimiter in the top const() section
-// 4. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
-// 5. In write.go, update WriteFirstLine and WriteData according to the required output
-// 6. In algorithm.go :
+// 1. In main.go:
+//        a. Update const above for directory path and folder names (if different)
+//        b. Verify readOtherLines and writeOtherLines is set with correct delimiter in the top const() section
+//        c. Update problem, problemData and answer struct according to the question
+// 2. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
+// 3. In write.go, update WriteFirstLine and WriteData according to the required output
+// 4. In algorithm.go:
 //      a. Update calcScore with score calculation
 //      b. Write your algorithm in func algorithm1()
 //      c. Optionally, add/remove algorithm and in main.go,
 //          update "func runDataSet(string)" to add/change the algorithm
-// 7. In main.go, update which dataset(s) to run concurrently in "func main()"
-// 8. Open terminal in prefixFilePath folder and check algorithm score with "go run ."
-// 9. When done, run "zip file.bat" located in prefixFilePath
-// 10. Submit to Judge System:
+// 5. In main.go, update which dataset(s) to run concurrently in "func main()"
+// 6. Open terminal in prefixFilePath folder and check algorithm score with "go run ."
+// 7. When done, run "zip file.bat" located in prefixFilePath
+// 8. Submit to Judge System:
 //      a. Source code:
 //          source.zip in prefixFilePath
 //      b. Output file:

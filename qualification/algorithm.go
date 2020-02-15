@@ -14,16 +14,12 @@ func (p *problem) algorithm1() {
 // Secondary algorithm
 //
 func (p *problem) algorithm2() {
-	// Run recursive in a loop
-	// maxScore := 0
-	// for k := range p.data {
-	//  fmt.Println("k:", k, time.Now().Format(time.Kitchen))
-	// 	ans := p.recursive(p.data, make([]problemData, 0), p.data[k], make([]answer, 0), &maxScore, 0)
-	//
-	// 	if calcScore(ans) > calcScore(p.answers) {
-	// 		p.answers = ans
-	// 	}
-	// }
+
+}
+
+// Run recursive algorithm
+func (p *problem) runRecursive() {
+	// p.recursive()
 }
 
 // Default recursive algorithm
