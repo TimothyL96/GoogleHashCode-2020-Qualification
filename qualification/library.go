@@ -41,8 +41,45 @@ func runDataSets(datasets string) {
 }
 
 // Write to file with name "output_datasetFileName"
+//
+// We now first check if this is the highest score recorded,
+// if yes write to output_best and output_last and update score at score_filename,txt,
+// or else just write to output_last
+//
 func (p *problem) writeFile() {
-	writer := NewWriter(prefixFilePath + prefixOutputFolderPath + "output_" + p.filePath)
+	outputBest := prefixFilePath + prefixOutputFolderPath
+	outputLast := prefixFilePath + prefixLastOutputFolderPath
+
+	// Write to best output folder if better than previous recorded score:
+	if p.score > p.previousBestScore {
+		// Write submission file
+		writer := NewWriter(outputBest + "output_" + p.filePath)
+
+		err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
+		errorCheck(err)
+
+		for k := range p.answers {
+			err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
+			errorCheck(err)
+		}
+
+		// Write score to file
+		writerScore := NewWriter(outputBest + "score_" + p.filePath)
+		err = writerScore.WriteLine(IntToString(p.score), writeFirstLine)
+		errorCheck(err)
+
+		writer.CloseFile()
+		writerScore.CloseFile()
+
+		// Update new previous best score
+		p.previousBestScore = p.score
+
+		fmt.Println("Written to best output folder:", p.filePath, "Score:", p.score)
+	}
+
+	// Write to last output folder:
+	// Write submission file
+	writer := NewWriter(outputLast + "output_" + p.filePath)
 
 	err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
 	errorCheck(err)
@@ -52,7 +89,13 @@ func (p *problem) writeFile() {
 		errorCheck(err)
 	}
 
+	// Write score to file
+	writerScore := NewWriter(outputLast + "score_" + p.filePath)
+	err = writerScore.WriteLine(IntToString(p.score), writeFirstLine)
+	errorCheck(err)
+
 	writer.CloseFile()
+	writerScore.CloseFile()
 }
 
 // Read first line to problem struct and remaining lines of first to problemData struct
@@ -86,7 +129,25 @@ func readFile(filePath string) *problem {
 		p.data = append(p.data, d)
 	}
 
+	// Read previous best score
+	p.readPreviousBest()
+
 	return p
+}
+
+// Read previous best score
+func (p *problem) readPreviousBest() {
+	// Read the highest score from best output folder:
+	// Create a new reader
+	reader, err := NewReader(prefixFilePath + prefixOutputFolderPath + "score_" + p.filePath)
+
+	p.previousBestScore = -1
+
+	if err == nil {
+		reader.ReadFirstLine(readFirstLine[0])
+		errorCheck(reader.Err)
+		p.previousBestScore = reader.Data[0].GetInt()
+	}
 }
 
 // Get file name according to the first character of file (A, B, C etc...)

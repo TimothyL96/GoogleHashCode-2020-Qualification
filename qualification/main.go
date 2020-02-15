@@ -13,8 +13,9 @@ const (
 	// Folder containing all the datasets
 	prefixDatasetFolderPath = "datasets\\"
 
-	// Scoring submission output folder
-	prefixOutputFolderPath = "output\\"
+	// Scoring submission output folders
+	prefixOutputFolderPath     = "output_best\\"
+	prefixLastOutputFolderPath = "output_last\\"
 
 	// Constants to used for reading write new line or space
 	rwNewLine = "\n"
@@ -51,10 +52,11 @@ var wg sync.WaitGroup
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
 	// DEFAULT
-	data     []problemData
-	answers  []answer
-	score    int
-	filePath string
+	data              []problemData
+	answers           []answer
+	score             int
+	previousBestScore int
+	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
 

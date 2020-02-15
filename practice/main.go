@@ -14,7 +14,8 @@ const (
 	prefixDatasetFolderPath = "datasets\\"
 
 	// Scoring submission output folder
-	prefixOutputFolderPath = "output\\"
+	prefixOutputFolderPath     = "output_best\\"
+	prefixLastOutputFolderPath = "output_last\\"
 
 	// Constants to used for reading write new line or space
 	rwNewLine = "\n"
@@ -42,7 +43,7 @@ const (
 
 	// Starting ID for problem data struct
 	// Ex: Photos in 2019 qualification problem, type of pizzas in 2020 practice problem
-	StartID = 0
+	startID = 0
 )
 
 var wg sync.WaitGroup
@@ -51,10 +52,11 @@ var wg sync.WaitGroup
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
 	// DEFAULT
-	data     []problemData
-	answers  []answer
-	score    int
-	filePath string
+	data              []problemData
+	answers           []answer
+	score             int
+	previousBestScore int
+	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
 	maxPizzaSlices int
@@ -89,18 +91,18 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	datasets += "A"
-	datasets += "B"
-	datasets += "C"
+	// datasets += "A"
+	// datasets += "B"
+	// datasets += "C"
 	datasets += "D"
-	datasets += "E"
+	// datasets += "E"
 
 	// For more datasets, simply add new line above as needed, according to first character of dataset file
 	// Ex:  datasets += "F"
 	//
 	// If it doesn't work / in case datasets are not named a_xxx, b_xxx ....
 	// Use (Uncomment line below):
-	// ReadFileSpecial()
+	// readFileSpecial()
 	// This will read ALL files in prefixDatasetFolderPath and run them as a dataset respectively
 	// Comment out line: "var datasets string", "datasets += "A" ...", and "runDataSets(datasets)"
 	//
