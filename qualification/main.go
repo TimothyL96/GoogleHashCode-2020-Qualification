@@ -6,6 +6,7 @@ import (
 
 const (
 	// Path for source code and such, should be updated before competition start
+	// Always add a slash '\\' behind directory
 	prefixFilePath = "C:\\Users\\Timothy\\go\\src\\github.com\\ttimt\\GoogleHashCode-2020-Qualification\\qualification\\"
 
 	// All folder names below should resides inside prefixFilePath above
@@ -14,8 +15,10 @@ const (
 	prefixDatasetFolderPath = "datasets\\"
 
 	// Scoring submission output folders
-	prefixOutputFolderPath     = "output_best\\"
-	prefixLastOutputFolderPath = "output_last\\"
+	prefixOutputFolderPath           = "output_best\\"
+	prefixLastOutputFolderPath       = "output_last\\"
+	prefixEndlessOutputFolderPath    = "output_endless\\"
+	prefixBruteForceOutputFolderPath = "output_brute\\"
 
 	// Constants to used for reading write new line or space
 	rwNewLine = "\n"
@@ -47,7 +50,6 @@ const (
 )
 
 var wg sync.WaitGroup
-var endlessRun = false
 
 // The initial struct for the problem
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
@@ -87,9 +89,6 @@ type answer struct {
 
 func main() {
 	var datasets string
-
-	// Set whether to execute endless run
-	endlessRun = true
 
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
@@ -141,24 +140,27 @@ func runDataSet(filePath string) {
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
-	if !endlessRun {
-		// Run the main algorithm - code it in algorithm.go
-		// Call and comment other algorithms as needed
-		// p.algorithm1()
-		p.algorithm2()
+	// Run the main algorithm - code it in algorithm.go
+	// Call and comment other algorithms as needed
+	// p.algorithm1()
+	p.algorithm2()
 
-		// Calculate the score  - code it in algorithm.go
-		p.calcScore()
+	// Comment out other algorithms to use any 1 of special algorithm below::
+	// Run endless algorithm run
+	// p.algorithmEndless()
 
-		// Print the score out
-		p.printScore()
+	// Run brute force algorithm run
+	// p.algorithmBruteForce()
 
-		// Write to file:
-		// Remember to update writeFirstLine() and writeData()
-		p.writeFile()
-	} else {
-		p.algorithmEndless()
-	}
+	// Calculate the score  - code it in algorithm.go
+	p.calcScore()
+
+	// Print the score out
+	p.printScore()
+
+	// Write to file:
+	// Remember to update writeFirstLine() and writeData()
+	p.writeFile()
 
 	// Indicate the goroutine has finished its task
 	wg.Done()

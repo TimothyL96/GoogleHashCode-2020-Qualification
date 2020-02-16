@@ -17,14 +17,8 @@ func (p *problem) algorithm2() {
 
 }
 
-// Run recursive algorithm
-func (p *problem) algorithmRecursive() {
-	// p.recursive()
-}
-
 // Default recursive algorithm
 //
-// TODO
 func (p *problem) recursive(data, curData []problemData, curPD problemData, maxData []answer, maxScore *int, currentScore int) []answer {
 	// Return if max reached
 	if true { // *maxScore == p.maxPizzaSlices
@@ -79,6 +73,11 @@ func (p *problem) algorithmEndless() {
 	// Reset answer
 	p.answers = nil
 	// }
+}
+
+// Run recursive algorithm
+func (p *problem) algorithmBruteForce() {
+	// p.recursive()
 }
 
 // Calculate score from input

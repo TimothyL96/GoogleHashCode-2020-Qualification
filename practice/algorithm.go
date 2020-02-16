@@ -186,6 +186,7 @@ func (p *problem) algorithm2() {
 }
 
 // Default recursive algorithm
+//
 func (p *problem) recursive(data, curData []problemData, curPD problemData, maxData []answer, maxScore *int, currentScore int) []answer {
 	// Return if max reached
 	if *maxScore == p.maxPizzaSlices {
@@ -227,6 +228,11 @@ func (p *problem) algorithmEndless() {
 		p.writeFile()
 		p.answers = nil
 	}
+}
+
+// Run recursive algorithm
+func (p *problem) algorithmBruteForce() {
+	// p.recursive()
 }
 
 // Calculate score from input

@@ -39,8 +39,35 @@ func runDataSets(datasets string) {
 // or else just write to output_last
 //
 func (p *problem) writeFile() {
-	outputBest := prefixFilePath + prefixOutputFolderPath
 	outputLast := prefixFilePath + prefixLastOutputFolderPath
+
+	// Write the best score
+	p.writeBest()
+
+	// Write to last output folder:
+	// Write submission file
+	writer := NewWriter(outputLast + "output_" + p.filePath)
+
+	err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
+	errorCheck(err)
+
+	for k := range p.answers {
+		err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
+		errorCheck(err)
+	}
+
+	// Write score to file
+	writerScore := NewWriter(outputLast + "score_" + p.filePath)
+	err = writerScore.WriteLine(IntToString(p.score), writeFirstLine)
+	errorCheck(err)
+
+	writer.CloseFile()
+	writerScore.CloseFile()
+}
+
+// Write only the best score ever recorded
+func (p *problem) writeBest() {
+	outputBest := prefixFilePath + prefixOutputFolderPath
 
 	// Write to best output folder if better than previous recorded score:
 	if p.score > p.previousBestScore {
@@ -68,26 +95,6 @@ func (p *problem) writeFile() {
 
 		fmt.Println("Written to best output folder:", p.filePath, "Score:", p.score)
 	}
-
-	// Write to last output folder:
-	// Write submission file
-	writer := NewWriter(outputLast + "output_" + p.filePath)
-
-	err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
-	errorCheck(err)
-
-	for k := range p.answers {
-		err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
-		errorCheck(err)
-	}
-
-	// Write score to file
-	writerScore := NewWriter(outputLast + "score_" + p.filePath)
-	err = writerScore.WriteLine(IntToString(p.score), writeFirstLine)
-	errorCheck(err)
-
-	writer.CloseFile()
-	writerScore.CloseFile()
 }
 
 // Read first line to problem struct and remaining lines of first to problemData struct
