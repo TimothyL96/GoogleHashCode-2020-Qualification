@@ -36,7 +36,13 @@ func runDataSets(datasets string) {
 	for k := range datasets {
 		filePath := getFileName(string(datasets[k]))
 
-		go runDataSet(filePath)
+		if endlessRun {
+			go runEndless(filePath)
+		} else if bruteForceRun {
+			go runBruteForce(filePath)
+		} else {
+			go runDataSet(filePath)
+		}
 	}
 }
 
@@ -75,7 +81,7 @@ func (p *problem) writeFile() {
 
 // Write only the best score ever recorded
 func (p *problem) writeBest() {
-	outputBest := prefixFilePath + prefixOutputFolderPath
+	outputBest := prefixFilePath + outputFolder
 
 	// Write to best output folder if better than previous recorded score:
 	if p.score > p.previousBestScore {
@@ -146,7 +152,7 @@ func readFile(filePath string) *problem {
 func (p *problem) readPreviousBest() {
 	// Read the highest score from best output folder:
 	// Create a new reader
-	reader, err := NewReader(prefixFilePath + prefixOutputFolderPath + "score_" + p.filePath)
+	reader, err := NewReader(prefixFilePath + outputFolder + "score_" + p.filePath)
 
 	p.previousBestScore = -1
 

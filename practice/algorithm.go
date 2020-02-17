@@ -221,13 +221,7 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 
 // Endless algorithm till max reached or interrupt signalled
 func (p *problem) algorithmEndless() {
-	for p.score != p.maxPizzaSlices {
-		p.algorithm2()
-		p.calcScore()
-		p.printScore()
-		p.writeFile()
-		p.answers = nil
-	}
+	p.algorithm2()
 }
 
 // Run recursive algorithm

@@ -1,4 +1,4 @@
 /practice/source.zip
 /qualification/source.zip
-/practice/output_best/
-/practice/output_last/
+/practice/output_best/*
+/practice/output_last/*

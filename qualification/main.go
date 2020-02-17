@@ -1,13 +1,14 @@
 package main
 
 import (
+	"flag"
 	"sync"
 )
 
 const (
 	// Path for source code and such, should be updated before competition start
 	// Always add a slash '\\' behind directory
-	prefixFilePath = "C:\\Users\\Timothy\\go\\src\\github.com\\ttimt\\GoogleHashCode-2020-Qualification\\qualification\\"
+	prefixFilePath = ".\\"
 
 	// All folder names below should resides inside prefixFilePath above
 	//
@@ -50,6 +51,9 @@ const (
 )
 
 var wg sync.WaitGroup
+var outputFolder string
+var endlessRun bool
+var bruteForceRun bool
 
 // The initial struct for the problem
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
@@ -87,7 +91,24 @@ type answer struct {
 	*problemData
 }
 
+func init() {
+	flag.BoolVar(&endlessRun, "endless", false, "Execute endless run")
+	flag.BoolVar(&bruteForceRun, "brute", false, "Execute brute force run")
+}
+
 func main() {
+	// Parse CLI flags
+	flag.Parse()
+
+	// Set output folder based on flags
+	if endlessRun {
+		outputFolder = prefixEndlessOutputFolderPath
+	} else if bruteForceRun {
+		outputFolder = prefixBruteForceOutputFolderPath
+	} else {
+		outputFolder = prefixOutputFolderPath
+	}
+
 	var datasets string
 
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
@@ -145,13 +166,6 @@ func runDataSet(filePath string) {
 	// p.algorithm1()
 	p.algorithm2()
 
-	// Comment out other algorithms to use any 1 of special algorithm below::
-	// Run endless algorithm run
-	// p.algorithmEndless()
-
-	// Run brute force algorithm run
-	// p.algorithmBruteForce()
-
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()
 
@@ -161,6 +175,55 @@ func runDataSet(filePath string) {
 	// Write to file:
 	// Remember to update writeFirstLine() and writeData()
 	p.writeFile()
+
+	// Indicate the goroutine has finished its task
+	wg.Done()
+}
+
+// Execute endless run
+func runEndless(filePath string) {
+	// Read data from the file path and return to p as problem struct
+	// Remember to update readFirstLine() and readData()
+	p := readFile(filePath)
+
+	for true { // p.score != p.maxPizzaSlices {
+		p.answers = nil
+		p.algorithmEndless()
+
+		// Calculate the score  - code it in algorithm.go
+		p.calcScore()
+
+		if p.score > p.previousBestScore {
+			// Print the score out
+			p.printScore()
+
+			// Write to file:
+			// Remember to update writeFirstLine() and writeData()
+			p.writeBest()
+		}
+	}
+
+	// Indicate the goroutine has finished its task
+	wg.Done()
+}
+
+// Execute brute force run
+func runBruteForce(filePath string) {
+	// Read data from the file path and return to p as problem struct
+	// Remember to update readFirstLine() and readData()
+	p := readFile(filePath)
+
+	p.algorithmBruteForce()
+
+	// Calculate the score  - code it in algorithm.go
+	p.calcScore()
+
+	// Print the score out
+	p.printScore()
+
+	// Write to file:
+	// Remember to update writeFirstLine() and writeData()
+	p.writeBest()
 
 	// Indicate the goroutine has finished its task
 	wg.Done()
