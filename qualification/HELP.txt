@@ -6,7 +6,7 @@
 //        c. Update problem, problemData and answer struct according to the question
 // 2. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
 // 3. In write.go, update WriteFirstLine and WriteData according to the required output
-// 4. Update calcScore with score calculation
+// 4. Update calcScore with score calculation (algorithm.go)
 // 5. Update algorithm:
 //      a. If executing endless run: start the app with flag -endless
 //          - Update algorithmEndless() in algorithm.go,

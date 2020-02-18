@@ -66,7 +66,8 @@ type problem struct {
 	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
-
+	nrOfPhotos    int
+	dataWVertical []problemData
 }
 
 // Struct for the data
@@ -77,7 +78,10 @@ type problemData struct {
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
-
+	orientation string
+	nrOfTags    int
+	tags        map[string]struct{}
+	photosID    []int
 }
 
 // Struct to store per data for the final answer
@@ -89,6 +93,17 @@ type problemData struct {
 // Slice inside this answer struct should be avoided if unnecessary
 type answer struct {
 	*problemData
+}
+
+type tag struct {
+	photo    *problemData
+	previous *tag
+	next     *tag
+}
+
+type tagWrap struct {
+	start *tag
+	end   *tag
 }
 
 func init() {
@@ -160,6 +175,8 @@ func runDataSet(filePath string) {
 	// Read data from the file path and return to p as problem struct
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
+
+	p.assignVertical()
 
 	// Run the main algorithm - code it in algorithm.go
 	// Call and comment other algorithms as needed

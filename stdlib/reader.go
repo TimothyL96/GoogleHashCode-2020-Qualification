@@ -58,7 +58,14 @@ func (r *Reader) ReadNextData(del byte) bool {
 	line, err := r.ioReader.ReadString(del)
 
 	if err != nil {
-		if err == io.EOF {
+		// if err != io.EOF || len(line) == 0 {
+		// 	_ = r.file.Close()
+		// 	r.Err = err
+		// 	return false
+		// } else {
+		// 	r.lastRead = true
+		// }
+		if err == io.EOF && line != "" {
 			r.lastRead = true
 		} else {
 			_ = r.file.Close()

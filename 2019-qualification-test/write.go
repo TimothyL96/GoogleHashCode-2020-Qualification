@@ -29,7 +29,15 @@ func (p *problem) writeFirstLine() (str string) {
 //
 // Use IntToString to convert integers to string
 func (a *answer) writeData() (str string) {
-	str = IntToString(a.ID)
+	if len(a.photosID) > 0 {
+		for k := range a.photosID {
+			str = " " + IntToString(a.photosID[k])
+		}
+
+		str = str[1:]
+	} else {
+		str = IntToString(a.ID)
+	}
 
 	return
 }

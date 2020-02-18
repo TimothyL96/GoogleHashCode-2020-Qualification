@@ -16,7 +16,7 @@ import (
 func (p *problem) readFirstLine(dataInput []InputString) {
 	// Store the data from dataInput to p of type problem accordingly
 	// Ex: p.nrOfPhotos = dataInput[0].GetInt()
-
+	p.nrOfPhotos = dataInput[0].GetInt()
 }
 
 // Read lines of data excluding first line from the file
@@ -47,5 +47,12 @@ func (d *problemData) readData(dataInput []InputString, reader *Reader) {
 	// 	errorCheck(reader.Err)
 	// 	d.coordinate[0] = reader.Data[0].GetString() // or create and assign to the proper struct
 	// }
+	d.orientation = dataInput[0].GetString()
+	d.nrOfTags = dataInput[1].GetInt()
 
+	d.tags = make(map[string]struct{})
+
+	for _, v := range dataInput[2:] {
+		d.tags[v.GetString()] = struct{}{}
+	}
 }
