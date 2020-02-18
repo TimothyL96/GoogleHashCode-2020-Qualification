@@ -1,0 +1,34 @@
+// ******************** INFO ******************** //
+// Steps:
+// 1. In main.go:
+//        a. Update const above for directory path and folder names (if different)
+//        b. Verify readOtherLines and writeOtherLines is set with correct delimiter in the top const() section
+//        c. Update problem, problemData and answer struct according to the question
+// 2. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
+// 3. In write.go, update WriteFirstLine and WriteData according to the required output
+// 4. Update calcScore with score calculation
+// 5. Update algorithm:
+//      a. If executing endless run: start the app with flag -endless
+//          - Update algorithmEndless() in algorithm.go,
+//          - and loop stop logic in runEndless() in main.go
+//      b. If executing brute force run: start the app with flag -brute
+//          - Update algorithmBruteForce() and recursive() in algorithm.go
+//      c. If executing normal run, no flag needed:
+//          Update runDataSet() in main(), and execute the suitable algorithm
+// 5. In main.go, update which dataset(s) to run concurrently in "func main()"
+// 6. Open terminal in prefixFilePath folder and run with "go run ."
+// 7. When done, run "zip file.bat" located in prefixFilePath
+// 8. Submit to Judge System:
+//      a. Source code:
+//          source.zip in prefixFilePath
+//      b. Output file:
+//          output file in:
+//              - Normal run:       prefixFilePath/output_best
+//              - Endless run:      prefixFilePath/output_endless
+//              - Brute force run:  prefixFilePath/output_brute
+// * Submit early to verify your calcScore method is accurate
+
+// LIBRARY: Hover method name for more information
+// func IntToString(int) string - Convert integer to string and not to the ASCII representation
+//
+// ******************** INFO ******************** //
