@@ -163,11 +163,47 @@ func (p *problem) assignVertical() {
 		}
 	}
 
+	lenSingleVertical := len(singleVertical)
+
+	// Return if no vertical image or only one
+	if lenSingleVertical <= 1 {
+		return
+	}
+
+	// Store unassigned vertical photos
+	var currentOverlap int
+	var smallestOverlapPhotoPosition int
+	var smallestOverlap int
+
 	// Process vertical
-	for i := 0; i < len(singleVertical); i += 2 {
-		if i+1 < len(singleVertical) {
-			appendVertical(&singleVertical[i], &singleVertical[i+1])
-			p.dataWVertical = append(p.dataWVertical, singleVertical[i])
+	// Process all vertical images
+	for k, v := range singleVertical {
+		// Process current image
+		// If no vertical image left, discard this image from use
+		// Pick another vertical photo to form a slide
+		if !v.isUsedAsVertical && k+1 < lenSingleVertical {
+			// Find the one with least overlap
+			smallestOverlapPhotoPosition = k + 1
+			smallestOverlap = calcNumberOfOverlapTags(v, singleVertical[k+1])
+
+			for j, v1 := range singleVertical[k+1:] {
+				if !v1.isUsedAsVertical {
+					currentOverlap = calcNumberOfOverlapTags(v, v1)
+					if currentOverlap < smallestOverlap {
+						smallestOverlapPhotoPosition = k + 1 + j
+						smallestOverlap = currentOverlap
+
+						// Improve performance by ending faster when best solution is found
+						if smallestOverlap == 0 {
+							break
+						}
+					}
+				}
+			}
+
+			// Append smallestOverlapPhoto into v
+			appendVertical(&singleVertical[k], &singleVertical[smallestOverlapPhotoPosition])
+			p.dataWVertical = append(p.dataWVertical, singleVertical[k])
 		}
 	}
 
@@ -183,6 +219,20 @@ func appendVertical(v1, v2 *problemData) {
 	}
 
 	v1.photosID = append(v1.photosID, v1.ID, v2.ID)
+
+	// Set the flag to indicate the vertical photo is used
+	v1.isUsedAsVertical = true
+	v2.isUsedAsVertical = true
+}
+
+func calcNumberOfOverlapTags(photo, photo1 problemData) (total int) {
+	for p1t := range photo.tags {
+		if _, ok := photo1.tags[p1t]; ok {
+			total++
+		}
+	}
+
+	return
 }
 
 // Default recursive algorithm

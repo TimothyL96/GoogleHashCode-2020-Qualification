@@ -2,8 +2,15 @@ package main
 
 import (
 	"flag"
+	"math/rand"
 	"sync"
+	"time"
 )
+
+// A - 2
+// B - 206,136
+// C - 1,709
+// D - 456,744
 
 const (
 	// Path for source code and such, should be updated before competition start
@@ -78,10 +85,11 @@ type problemData struct {
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
-	orientation string
-	nrOfTags    int
-	tags        map[string]struct{}
-	photosID    []int
+	orientation      string
+	nrOfTags         int
+	tags             map[string]struct{}
+	photosID         []int
+	isUsedAsVertical bool
 }
 
 // Struct to store per data for the final answer
@@ -129,7 +137,7 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	datasets += "A"
+	// datasets += "A"
 	datasets += "B"
 	datasets += "C"
 	datasets += "D"
@@ -203,16 +211,25 @@ func runEndless(filePath string) {
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
+	p.assignVertical()
+
 	for true { // p.score != p.maxPizzaSlices {
 		p.answers = nil
+
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(p.dataWVertical), func(i, j int) {
+			p.data[i], p.data[j] = p.data[j], p.data[i]
+		})
+
 		p.algorithmEndless()
 
 		// Calculate the score  - code it in algorithm.go
 		p.calcScore()
 
+		// Print the score out
+		p.printScore()
+
 		if p.score > p.previousBestScore {
-			// Print the score out
-			p.printScore()
 
 			// Write to file:
 			// Remember to update writeFirstLine() and writeData()
