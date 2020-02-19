@@ -29,8 +29,8 @@ func (p *problem) writeFirstLine() (str string) {
 //
 // Use IntToString to convert integers to string
 func (a *answer) writeData() (str string) {
-	for k := range a.vehicles {
-		str += IntToString(a.vehicles[k].ID) + " "
+	for k := range a.rides {
+		str += IntToString(a.rides[k].ID) + " "
 	}
 
 	if len(str) > 0 {

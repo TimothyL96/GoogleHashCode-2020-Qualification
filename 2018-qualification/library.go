@@ -24,9 +24,12 @@ func (p *problem) calcScore() {
 func (p *problem) printAnswer() {
 	fmt.Println("Answer:")
 	for k := range p.answers {
-		fmt.Print(p.answers[k], " ")
+		fmt.Println("Vehicle:", k)
+		for j := range p.answers[k].rides {
+			fmt.Print(p.answers[k].rides[j].ID, " ")
+		}
+		fmt.Println()
 	}
-	fmt.Println()
 }
 
 // Run all datasets according to the input string

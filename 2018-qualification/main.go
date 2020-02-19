@@ -101,7 +101,7 @@ type problemData struct {
 // *Note - This is a slice in the problem struct above
 // Slice inside this answer struct should be avoided if unnecessary
 type answer struct {
-	vehicles []*problemData
+	rides []*problemData
 }
 
 func init() {
@@ -110,6 +110,10 @@ func init() {
 }
 
 func main() {
+	for i := 0; i < 69; i++ {
+		fmt.Printf("dataset/sharp/%03d.png dataset/blur/%03d.png\n", i, i)
+	}
+
 	// Parse CLI flags
 	flag.Parse()
 
@@ -128,10 +132,10 @@ func main() {
 	// **************** //
 
 	datasets += "A"
-	datasets += "B"
-	datasets += "C"
-	datasets += "D"
-	datasets += "E"
+	// datasets += "B"
+	// datasets += "C"
+	// datasets += "D"
+	// datasets += "E"
 
 	// **************** //
 	// For more datasets, simply add new line above as needed, according to first character of dataset file
@@ -179,7 +183,7 @@ func runDataSet(filePath string) {
 	// p.algorithm1()
 	p.algorithm2()
 
-	fmt.Println("Nr of vehicles:", len(p.answers))
+	fmt.Println("Nr of rides:", len(p.answers))
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()
