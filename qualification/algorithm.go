@@ -73,7 +73,7 @@ func (p *problem) algorithmBruteForce() {
 
 // Calculate score from input
 // Access answer struct with p.answers (type is a slice of answer)
-func calcScore(answers []answer) int {
+func (p *problem) calcScoreBase(answers []answer) int {
 	score := 0
 
 	for k := range answers {

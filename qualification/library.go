@@ -17,7 +17,7 @@ func (p *problem) printScore() {
 
 // Calculate answers score and store result in p.score
 func (p *problem) calcScore() {
-	p.score = calcScore(p.answers)
+	p.score = p.calcScoreBase(p.answers)
 }
 
 // Print answer out in sequence

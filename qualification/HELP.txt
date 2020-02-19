@@ -1,9 +1,8 @@
 // ******************** INFO ******************** //
 // Steps:
 // 1. In main.go:
-//        a. Update const above for directory path and folder names (if different)
-//        b. Verify readOtherLines and writeOtherLines is set with correct delimiter in the top const() section
-//        c. Update problem, problemData and answer struct according to the question
+//        a. Verify readOtherLines and writeOtherLines is set with correct delimiter in the top const() section
+//        b. Update problem, problemData and answer struct according to the question
 // 2. In read.go, update ReadFirstLine and ReadNextData according to the struct defined
 // 3. In write.go, update WriteFirstLine and WriteData according to the required output
 // 4. Update calcScore with score calculation (algorithm.go)
@@ -30,5 +29,6 @@
 
 // LIBRARY: Hover method name for more information
 // func IntToString(int) string - Convert integer to string and not to the ASCII representation
-//
+// func MaxInt(...int) int
+// func MinInt(...int) int
 // ******************** INFO ******************** //

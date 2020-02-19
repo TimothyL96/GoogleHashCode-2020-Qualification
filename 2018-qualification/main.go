@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"sync"
 )
 
@@ -66,7 +67,12 @@ type problem struct {
 	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
-
+	nrOfRows     int
+	nrOfColumns  int
+	nrOfVehicles int
+	nrOfRides    int
+	onTimeBonus  int
+	nrOfSteps    int
 }
 
 // Struct for the data
@@ -77,7 +83,14 @@ type problemData struct {
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
-
+	rowStart      int
+	columnStart   int
+	rowEnd        int
+	columnEnd     int
+	earliestStart int
+	latestFinish  int
+	start         int
+	end           int
 }
 
 // Struct to store per data for the final answer
@@ -88,7 +101,7 @@ type problemData struct {
 // *Note - This is a slice in the problem struct above
 // Slice inside this answer struct should be avoided if unnecessary
 type answer struct {
-	*problemData
+	vehicles []*problemData
 }
 
 func init() {
@@ -165,6 +178,8 @@ func runDataSet(filePath string) {
 	// Call and comment other algorithms as needed
 	// p.algorithm1()
 	p.algorithm2()
+
+	fmt.Println("Nr of vehicles:", len(p.answers))
 
 	// Calculate the score  - code it in algorithm.go
 	p.calcScore()

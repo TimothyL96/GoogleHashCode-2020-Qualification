@@ -29,7 +29,13 @@ func (p *problem) writeFirstLine() (str string) {
 //
 // Use IntToString to convert integers to string
 func (a *answer) writeData() (str string) {
-	str = IntToString(a.ID)
+	for k := range a.vehicles {
+		str += IntToString(a.vehicles[k].ID) + " "
+	}
+
+	if len(str) > 0 {
+		str = str[:len(str)-1]
+	}
 
 	return
 }

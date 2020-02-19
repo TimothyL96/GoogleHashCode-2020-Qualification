@@ -35,3 +35,29 @@ func DataSplit(str string, del string) []InputString {
 func IntToString(i int) string {
 	return strconv.Itoa(i)
 }
+
+// MinInt gets the min from input
+func MinInt(values ...int) int {
+	lowest := values[0]
+
+	for _, i := range values[1:] {
+		if i < lowest {
+			lowest = i
+		}
+	}
+
+	return lowest
+}
+
+// MaxInt gets the max from input
+func MaxInt(values ...int) int {
+	highest := values[0]
+
+	for _, i := range values[1:] {
+		if i > highest {
+			highest = i
+		}
+	}
+
+	return highest
+}

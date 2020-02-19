@@ -17,14 +17,14 @@ func (p *problem) printScore() {
 
 // Calculate answers score and store result in p.score
 func (p *problem) calcScore() {
-	p.score = calcScore(p.answers)
+	p.score = p.calcScoreBase(p.answers)
 }
 
 // Print answer out in sequence
 func (p *problem) printAnswer() {
 	fmt.Println("Answer:")
 	for k := range p.answers {
-		fmt.Print(p.answers[k].ID, " ")
+		fmt.Print(p.answers[k], " ")
 	}
 	fmt.Println()
 }
@@ -88,8 +88,9 @@ func (p *problem) writeBest() {
 		// Write submission file
 		writer := NewWriter(outputBest + "output_" + p.filePath)
 
-		err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
-		errorCheck(err)
+		var err error
+		// err := writer.WriteLine(p.writeFirstLine(), writeFirstLine)
+		// errorCheck(err)
 
 		for k := range p.answers {
 			err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
