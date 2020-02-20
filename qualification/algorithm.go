@@ -35,17 +35,13 @@ func (p *problem) algorithm2() {
 	}
 
 	curLibrary := 0
-	for i := 0; i < p.nrOfDays && i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays; i++ {
-		i += p.libraries[curLibrary].signUpDuration
-		p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
-		p.libraries[curLibrary].assigned = true
-		curLibrary++
-	}
-
-	for k := range p.libraries {
-		if !p.libraries[k].assigned {
-			// fmt.Println("unassigned", p.libraries[k].ID)
+	for i := 0; i < p.nrOfDays && curLibrary < len(p.libraries); {
+		if i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays {
+			p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
+			p.libraries[curLibrary].assigned = true
+			i += p.libraries[curLibrary].signUpDuration
 		}
+		curLibrary++
 	}
 
 	for k := range p.answers {
