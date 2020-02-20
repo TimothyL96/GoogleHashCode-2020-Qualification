@@ -66,8 +66,10 @@ func (p *problem) writeFile() {
 	errorCheck(err)
 
 	for k := range p.answers {
-		err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
-		errorCheck(err)
+		if len(p.answers[k].booksAns) > 0 {
+			err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
+			errorCheck(err)
+		}
 	}
 
 	// Write score to file

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"math/rand"
 	"sort"
+	"time"
 )
 
 // Main algorithm
@@ -18,15 +20,32 @@ func (p *problem) algorithm1() {
 // Secondary algorithm
 //
 func (p *problem) algorithm2() {
-	sort.Slice(p.libraries, func(i, j int) bool {
-		return p.libraries[i].shipPerDay > p.libraries[j].shipPerDay
+	// sort.Slice(p.libraries, func(i, j int) bool {
+	// 	return p.libraries[i].signUpDuration < p.libraries[j].signUpDuration
+	// })
+	rand.Seed(time.Now().Unix())
+	rand.Shuffle(len(p.libraries), func(i, j int) {
+		p.libraries[i], p.libraries[j] = p.libraries[j], p.libraries[i]
 	})
+
+	for k := range p.libraries {
+		sort.Slice(p.libraries[k].books, func(i, j int) bool {
+			return p.libraries[k].books[i].score > p.libraries[k].books[j].score
+		})
+	}
 
 	curLibrary := 0
 	for i := 0; i < p.nrOfDays && i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays; i++ {
 		i += p.libraries[curLibrary].signUpDuration
 		p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
+		p.libraries[curLibrary].assigned = true
 		curLibrary++
+	}
+
+	for k := range p.libraries {
+		if !p.libraries[k].assigned {
+			// fmt.Println("unassigned", p.libraries[k].ID)
+		}
 	}
 
 	for k := range p.answers {

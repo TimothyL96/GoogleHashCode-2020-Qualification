@@ -75,7 +75,7 @@ type problem struct {
 
 // Struct for the data
 // Ex: var nrOfTags - Number of tags in photo with ID 3
-// booksAns
+// books
 type problemData struct {
 	// DEFAULT
 	ID       int
@@ -91,6 +91,7 @@ type library struct {
 	signUpDuration int
 	shipPerDay     int
 	books          []*problemData
+	assigned       bool
 }
 
 // Struct to store per data for the final answer

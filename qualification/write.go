@@ -29,7 +29,7 @@ func (p *problem) writeFirstLine() (str string) {
 //
 // Use IntToString to convert integers to string
 func (a *answer) writeData() (str string) {
-	str = IntToString(a.ID) + IntToString(len(a.booksAns)) + "\n"
+	str = IntToString(a.ID) + " " + IntToString(len(a.booksAns)) + "\n"
 
 	for k := range a.booksAns {
 		str += IntToString(a.booksAns[k].ID) + " "
