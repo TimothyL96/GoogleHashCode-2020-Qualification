@@ -13,7 +13,13 @@ import (
 // If more than 1 variables per line:
 // Ex: str := IntToString(a.ID) + " " + IntToString(a.Orientation)
 func (p *problem) writeFirstLine() (str string) {
-	str = IntToString(len(p.answers))
+	count := 0
+	for k := range p.answers {
+		if len(p.answers[k].booksAns) > 0 {
+			count++
+		}
+	}
+	str = IntToString(count)
 
 	return
 }
@@ -35,9 +41,7 @@ func (a *answer) writeData() (str string) {
 		str += IntToString(a.booksAns[k].ID) + " "
 	}
 
-	if len(a.booksAns) > 0 {
-		str = str[:len(str)-1]
-	}
+	str = str[:len(str)-1]
 
 	return
 }

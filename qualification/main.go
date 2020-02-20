@@ -130,7 +130,7 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	datasets += "A"
+	// datasets += "A"
 	datasets += "B"
 	datasets += "C"
 	datasets += "D"
@@ -205,6 +205,7 @@ func runEndless(filePath string) {
 
 	for true { // p.score != p.maxPizzaSlices {
 		p.answers = nil
+		p.uniqueBooks = make(map[int]struct{})
 		p.algorithmEndless()
 
 		// Calculate the score  - code it in algorithm.go
