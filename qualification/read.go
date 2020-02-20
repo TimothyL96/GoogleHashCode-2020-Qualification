@@ -20,6 +20,7 @@ func (p *problem) readFirstLine(dataInput []InputString) {
 	p.nrOfLibraries = dataInput[1].GetInt()
 	p.nrOfDays = dataInput[2].GetInt()
 	p.uniqueBooks = make(map[int]struct{})
+	p.uniqueBooksDay = make(map[int]struct{})
 }
 
 // Read first line gets the first line data from the file

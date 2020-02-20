@@ -67,10 +67,11 @@ type problem struct {
 	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
-	nrOfBooks     int
-	nrOfLibraries int
-	nrOfDays      int
-	uniqueBooks   map[int]struct{}
+	nrOfBooks      int
+	nrOfLibraries  int
+	nrOfDays       int
+	uniqueBooks    map[int]struct{}
+	uniqueBooksDay map[int]struct{}
 }
 
 // Struct for the data
@@ -92,6 +93,7 @@ type library struct {
 	shipPerDay     int
 	books          []*problemData
 	assigned       bool
+	maxScore       int
 }
 
 // Struct to store per data for the final answer
@@ -206,12 +208,20 @@ func runEndless(filePath string) {
 	for true { // p.score != p.maxPizzaSlices {
 		p.answers = nil
 		p.uniqueBooks = make(map[int]struct{})
-		p.algorithmEndless()
+		for k := range p.data {
+			p.data[k].assigned = false
+		}
+		for k := range p.libraries {
+			p.libraries[k].assigned = false
+		}
+		p.algorithm1()
 
 		// Calculate the score  - code it in algorithm.go
 		p.calcScore()
 
+		// p.printScore()
 		if p.score > p.previousBestScore {
+
 			// Print the score out
 			p.printScore()
 
