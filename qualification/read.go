@@ -16,11 +16,24 @@ import (
 func (p *problem) readFirstLine(dataInput []InputString) {
 	// Store the data from dataInput to p of type problem accordingly
 	// Ex: p.nrOfPhotos = dataInput[0].GetInt()
+	p.nrOfBooks = dataInput[0].GetInt()
+	p.nrOfLibraries = dataInput[1].GetInt()
+	p.nrOfDays = dataInput[2].GetInt()
+	p.uniqueBooks = make(map[int]struct{})
+}
 
+// Read first line gets the first line data from the file
+func (p *problem) readSecondLine(dataInput []InputString) {
+	// Store the data from dataInput to p of type problem accordingly
+	// Ex: p.nrOfPhotos = dataInput[0].GetInt()
+	for i := 0; i < len(dataInput); i++ {
+		book := problemData{ID: i, score: dataInput[i].GetInt()}
+		p.data = append(p.data, book)
+	}
 }
 
 // Read lines of data excluding first line from the file
-func (d *problemData) readData(dataInput []InputString, reader *Reader) {
+func (d *library) readData(dataInput []InputString, reader *Reader, p *problem) {
 	// Store the data from dataInput to d of type problemData
 	// d will be stored to p.data[]
 	// Ex:
@@ -48,4 +61,13 @@ func (d *problemData) readData(dataInput []InputString, reader *Reader) {
 	// 	d.coordinate[0] = reader.Data[0].GetString() // or create and assign to the proper struct
 	// }
 
+	d.nrOfBooks = dataInput[0].GetInt()
+	d.signUpDuration = dataInput[1].GetInt()
+	d.shipPerDay = dataInput[2].GetInt()
+
+	reader.ReadNextData(readOtherLines[0])
+	errorCheck(reader.Err)
+	for k := range reader.Data {
+		d.books = append(d.books, &p.data[reader.Data[k].GetInt()])
+	}
 }

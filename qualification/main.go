@@ -60,24 +60,37 @@ var bruteForceRun bool
 type problem struct {
 	// DEFAULT
 	data              []problemData
+	libraries         []library
 	answers           []answer
 	score             int
 	previousBestScore int
 	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
-
+	nrOfBooks     int
+	nrOfLibraries int
+	nrOfDays      int
+	uniqueBooks   map[int]struct{}
 }
 
 // Struct for the data
 // Ex: var nrOfTags - Number of tags in photo with ID 3
+// booksAns
 type problemData struct {
 	// DEFAULT
 	ID       int
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
+	score int
+}
 
+type library struct {
+	ID             int
+	nrOfBooks      int
+	signUpDuration int
+	shipPerDay     int
+	books          []*problemData
 }
 
 // Struct to store per data for the final answer
@@ -88,7 +101,9 @@ type problemData struct {
 // *Note - This is a slice in the problem struct above
 // Slice inside this answer struct should be avoided if unnecessary
 type answer struct {
-	*problemData
+	*library
+	signUpEndDay int
+	booksAns     []*problemData
 }
 
 func init() {
@@ -119,6 +134,7 @@ func main() {
 	datasets += "C"
 	datasets += "D"
 	datasets += "E"
+	datasets += "F"
 
 	// **************** //
 	// For more datasets, simply add new line above as needed, according to first character of dataset file

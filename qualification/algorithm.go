@@ -1,5 +1,9 @@
 package main
 
+import (
+	"sort"
+)
+
 // Main algorithm
 //
 // To sort p.data ID ascending :
@@ -14,7 +18,33 @@ func (p *problem) algorithm1() {
 // Secondary algorithm
 //
 func (p *problem) algorithm2() {
+	sort.Slice(p.libraries, func(i, j int) bool {
+		return p.libraries[i].shipPerDay > p.libraries[j].shipPerDay
+	})
 
+	curLibrary := 0
+	for i := 0; i < p.nrOfDays && i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays; i++ {
+		i += p.libraries[curLibrary].signUpDuration
+		p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
+		curLibrary++
+	}
+
+	for k := range p.answers {
+		libraryDays := p.answers[k].signUpEndDay + 1
+		for i := 0; i < p.answers[k].nrOfBooks; i += p.answers[k].shipPerDay {
+			libraryDays++
+			bookPerDay := 0
+			for j := range p.answers[k].books {
+				if bookPerDay < p.answers[k].shipPerDay {
+					if _, ok := p.uniqueBooks[p.answers[k].books[j].ID]; !ok {
+						p.uniqueBooks[p.answers[k].books[j].ID] = struct{}{}
+						p.answers[k].booksAns = append(p.answers[k].booksAns, p.answers[k].books[j])
+						bookPerDay++
+					}
+				}
+			}
+		}
+	}
 }
 
 // Default recursive algorithm
@@ -23,39 +53,6 @@ func (p *problem) recursive(data, curData []problemData, curPD problemData, maxD
 	// Return if max reached
 	if true { // *maxScore == p.maxPizzaSlices
 		return maxData
-	}
-
-	// Add current curPD value if still within range
-	if true { // Ex:curPD.nrOfSlices+currentScore <= p.maxPizzaSlices
-		// currentScore += curPD.nrOfSlices
-		curData = append(curData, curPD)
-	}
-
-	// End if data ends
-	if len(data) <= 1 {
-		// Update max score
-		if currentScore > *maxScore {
-			*maxScore = currentScore
-
-			var newMax []answer
-			for k := range curData {
-				newMax = append(newMax, answer{problemData: &curData[k]})
-			}
-
-			return newMax
-		}
-
-		// Output to preserve current max score if recursive takes too long time
-		// if *maxScore > 999999995 {
-		// 	p.writeFile()
-		// }
-
-		return maxData
-	}
-
-	// Recursive
-	for k := range data[1:] {
-		maxData = p.recursive(data[k+1:], curData, data[k+1], maxData, maxScore, currentScore)
 	}
 
 	return maxData
@@ -75,9 +72,15 @@ func (p *problem) algorithmBruteForce() {
 // Access answer struct with p.answers (type is a slice of answer)
 func (p *problem) calcScoreBase(answers []answer) int {
 	score := 0
+	uniqueBooks := make(map[int]struct{})
 
 	for k := range answers {
-		score += k // Update k to scoring value
+		for j := range answers[k].booksAns {
+			if _, ok := uniqueBooks[answers[k].booksAns[j].ID]; !ok {
+				score += answers[k].booksAns[j].score
+				uniqueBooks[answers[k].booksAns[j].ID] = struct{}{}
+			}
+		}
 	}
 
 	return score

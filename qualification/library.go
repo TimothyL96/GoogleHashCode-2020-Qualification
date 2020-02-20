@@ -131,15 +131,19 @@ func readFile(filePath string) *problem {
 	errorCheck(reader.Err)
 	p.readFirstLine(reader.Data)
 
+	reader.ReadNextData(readFirstLine[0])
+	errorCheck(reader.Err)
+	p.readSecondLine(reader.Data)
+
 	for reader.ReadNextData(readOtherLines[0]) {
 		errorCheck(reader.Err)
 
-		var d problemData
+		var d library
 
-		d.readData(reader.Data, reader)
+		d.readData(reader.Data, reader, p)
 		d.ID = reader.GetNewID()
 
-		p.data = append(p.data, d)
+		p.libraries = append(p.libraries, d)
 	}
 
 	// Read previous best score
