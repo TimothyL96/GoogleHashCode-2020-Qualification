@@ -68,93 +68,64 @@ func (p *problem) algorithm2() {
 		})
 	}
 
-	// max score per library
+	// Get first day max score
 	for k := range p.libraries {
-		max := (p.nrOfDays - p.libraries[k].signUpDuration) * p.libraries[k].shipPerDay
+		p.libraries[k].maxScore = 0
+		days := p.nrOfDays - p.libraries[k].signUpDuration
+		books := days * p.libraries[k].shipPerDay
+		if books > len(p.libraries[k].books) {
+			books = len(p.libraries[k].books)
+		}
 
-		for j := range p.libraries[k].books {
-			if max > 0 {
-				p.libraries[k].maxScore += p.libraries[k].books[j].score
-				max--
+		for i := 0; i < len(p.libraries[k].books) && i < books; i += p.libraries[k].shipPerDay {
+			for j := i; j < p.libraries[k].shipPerDay; j++ {
+				p.libraries[k].maxScore += p.libraries[k].books[i].score
 			}
 		}
-		p.libraries[k].maxScore -= p.libraries[k].signUpDuration * 3
 	}
 
+	// Sort by max score
 	sort.Slice(p.libraries, func(i, j int) bool {
-		return p.libraries[i].nrOfBooks > p.libraries[j].nrOfBooks
+		return p.libraries[i].maxScore > p.libraries[j].maxScore
 	})
 
-	// max score first day
-	// for k := range p.libraries {
-	// 	score := 0
-	// 	for i := 0; i < p.libraries[k].shipPerDay; i++ {
-	// 		score += p.libraries[k].books[i].score
-	// 	}
-	// }
-
-	// rand.Seed(time.Now().Unix())
-	// rand.Shuffle(len(p.libraries), func(i, j int) {
-	// 	p.libraries[i], p.libraries[j] = p.libraries[j], p.libraries[i]
-	// })
-
-	curLibrary := 0
-	for i := 0; i < p.nrOfDays && curLibrary < len(p.libraries); {
-		if i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays && !p.libraries[curLibrary].assigned {
-			i += p.libraries[curLibrary].signUpDuration
-			p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
-			p.libraries[curLibrary].assigned = true
-			break
-		}
-		curLibrary++
-	}
-
-	// Remaining libraries
-	for i := 0; i < 3000; i++ {
-		curLibrary = 0
-		lastDay := 0
-		if len(p.answers) > 0 {
-			lastDay = p.answers[len(p.answers)-1].signUpEndDay
+	// assign libraries
+	last := 0
+	for k := range p.libraries {
+		if last+p.libraries[k].signUpDuration <= p.nrOfDays && !p.libraries[k].assigned {
+			p.libraries[k].assigned = true
+			last += p.libraries[k].signUpDuration
+			p.answers = append(p.answers, answer{library: &p.libraries[k], signUpEndDay: last})
 		}
 
-		for i := lastDay; i < p.nrOfDays && curLibrary < len(p.libraries); {
-			if i+p.libraries[curLibrary].signUpDuration <= p.nrOfDays && !p.libraries[curLibrary].assigned {
-				i += p.libraries[curLibrary].signUpDuration
-				p.answers = append(p.answers, answer{library: &p.libraries[curLibrary], signUpEndDay: i})
-				p.libraries[curLibrary].assigned = true
-				break
-			}
-			curLibrary++
-		}
-
-		// max score per library
+		// Re-get max score
 		for k := range p.libraries {
 			if !p.libraries[k].assigned {
 				p.libraries[k].maxScore = 0
-				if p.answers[len(p.answers)-1].signUpEndDay+p.libraries[k].signUpDuration >= p.nrOfDays {
-					continue
+				days := p.nrOfDays - p.libraries[k].signUpDuration - last
+				books := days * p.libraries[k].shipPerDay
+				if books > len(p.libraries[k].books) {
+					books = len(p.libraries[k].books)
 				}
-				max := (p.answers[len(p.answers)-1].signUpEndDay - p.libraries[k].signUpDuration) * p.libraries[k].shipPerDay
 
-				for j := range p.libraries[k].books {
-					if max > 0 {
-						if _, ok := p.uniqueBooksDay[p.libraries[k].books[j].ID]; !ok {
-							p.uniqueBooksDay[p.libraries[k].books[j].ID] = struct{}{}
-							p.libraries[k].maxScore += p.libraries[k].books[j].score
-							max--
+				for i := 0; i < len(p.libraries[k].books) && i < books; i += p.libraries[k].shipPerDay {
+					for j := i; j < p.libraries[k].shipPerDay; j++ {
+						if !p.libraries[k].books[i].assigned {
+							p.libraries[k].maxScore += p.libraries[k].books[i].score
 						}
 					}
 				}
 			}
-			p.libraries[k].maxScore /= p.libraries[k].signUpDuration
 		}
-		p.uniqueBooksDay = make(map[int]struct{})
 
+		// Sort by max score
 		sort.Slice(p.libraries, func(i, j int) bool {
 			return p.libraries[i].maxScore > p.libraries[j].maxScore
 		})
+
 	}
 
+	// Create books from answer
 	for k := range p.answers {
 		maxBooks := (p.nrOfDays - p.answers[k].signUpEndDay) * p.answers[k].shipPerDay
 
