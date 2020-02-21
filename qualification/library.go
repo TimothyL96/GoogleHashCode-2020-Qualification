@@ -38,8 +38,6 @@ func runDataSets(datasets string) {
 
 		if endlessRun {
 			go runEndless(filePath)
-		} else if bruteForceRun {
-			go runBruteForce(filePath)
 		} else {
 			go runDataSet(filePath)
 		}

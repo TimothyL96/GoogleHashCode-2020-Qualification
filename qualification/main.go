@@ -53,7 +53,6 @@ const (
 var wg sync.WaitGroup
 var outputFolder string
 var endlessRun bool
-var bruteForceRun bool
 
 // The initial struct for the problem
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
@@ -72,6 +71,8 @@ type problem struct {
 	nrOfDays       int
 	uniqueBooks    map[int]struct{}
 	uniqueBooksDay map[int]struct{}
+	lastDay        int
+	maxScore       int
 }
 
 // Struct for the data
@@ -83,7 +84,9 @@ type problemData struct {
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
-	score int
+	score           int
+	frequency       int
+	scoreWFrequency int
 }
 
 type library struct {
@@ -92,6 +95,7 @@ type library struct {
 	signUpDuration int
 	shipPerDay     int
 	books          []*problemData
+	booksHash      map[int]struct{}
 	assigned       bool
 	maxScore       int
 }
@@ -111,7 +115,6 @@ type answer struct {
 
 func init() {
 	flag.BoolVar(&endlessRun, "endless", false, "Execute endless run")
-	flag.BoolVar(&bruteForceRun, "brute", false, "Execute brute force run")
 }
 
 func main() {
@@ -121,8 +124,6 @@ func main() {
 	// Set output folder based on flags
 	if endlessRun {
 		outputFolder = prefixEndlessOutputFolderPath
-	} else if bruteForceRun {
-		outputFolder = prefixBruteForceOutputFolderPath
 	} else {
 		outputFolder = prefixOutputFolderPath
 	}
@@ -135,7 +136,7 @@ func main() {
 	datasets += "A"
 	datasets += "B"
 	datasets += "C"
-	datasets += "D"
+	// datasets += "D"
 	datasets += "E"
 	datasets += "F"
 
@@ -205,7 +206,11 @@ func runEndless(filePath string) {
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
-	for true { // p.score != p.maxPizzaSlices {
+	for k := range p.data {
+		p.maxScore += p.data[k].score
+	}
+
+	for p.score != p.maxScore {
 		p.answers = nil
 		p.uniqueBooks = make(map[int]struct{})
 		for k := range p.data {
@@ -214,7 +219,8 @@ func runEndless(filePath string) {
 		for k := range p.libraries {
 			p.libraries[k].assigned = false
 		}
-		p.algorithm1()
+		p.lastDay = 0
+		p.algorithmEndless()
 
 		// Calculate the score  - code it in algorithm.go
 		p.calcScore()
@@ -230,28 +236,6 @@ func runEndless(filePath string) {
 			p.writeBest()
 		}
 	}
-
-	// Indicate the goroutine has finished its task
-	wg.Done()
-}
-
-// Execute brute force run
-func runBruteForce(filePath string) {
-	// Read data from the file path and return to p as problem struct
-	// Remember to update readFirstLine() and readData()
-	p := readFile(filePath)
-
-	p.algorithmBruteForce()
-
-	// Calculate the score  - code it in algorithm.go
-	p.calcScore()
-
-	// Print the score out
-	p.printScore()
-
-	// Write to file:
-	// Remember to update writeFirstLine() and writeData()
-	p.writeBest()
 
 	// Indicate the goroutine has finished its task
 	wg.Done()
