@@ -24,7 +24,7 @@ func (p *problem) writeFirstLine() (str string) {
 	return
 }
 
-// Write remaining data to the file
+// Write remaining books to the file
 //
 // *Note - p.answers will be automatically traversed
 // Just indicate what to output per dataset
@@ -35,6 +35,10 @@ func (p *problem) writeFirstLine() (str string) {
 //
 // Use IntToString to convert integers to string
 func (a *answer) writeData() (str string) {
+	if len(a.booksAns) == 0 {
+		return ""
+	}
+
 	str = IntToString(a.ID) + " " + IntToString(len(a.booksAns)) + "\n"
 
 	for k := range a.booksAns {

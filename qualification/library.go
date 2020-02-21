@@ -64,8 +64,9 @@ func (p *problem) writeFile() {
 	errorCheck(err)
 
 	for k := range p.answers {
-		if len(p.answers[k].booksAns) > 0 {
-			err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
+		str := p.answers[k].writeData()
+		if len(str) > 0 {
+			err = writer.WriteLine(str, writeOtherLines)
 			errorCheck(err)
 		}
 	}
@@ -92,8 +93,9 @@ func (p *problem) writeBest() {
 		errorCheck(err)
 
 		for k := range p.answers {
-			if len(p.answers[k].booksAns) > 0 {
-				err = writer.WriteLine(p.answers[k].writeData(), writeOtherLines)
+			str := p.answers[k].writeData()
+			if len(str) > 0 {
+				err = writer.WriteLine(str, writeOtherLines)
 				errorCheck(err)
 			}
 		}
@@ -113,7 +115,7 @@ func (p *problem) writeBest() {
 	}
 }
 
-// Read first line to problem struct and remaining lines of first to problemData struct
+// Read first line to problem struct and remaining lines of first to book struct
 func readFile(filePath string) *problem {
 	// Create a new problem instance
 	p := &problem{}

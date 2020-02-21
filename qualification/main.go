@@ -30,8 +30,8 @@ const (
 	writeFirstLine = rwNewLine
 
 	// What happens when you read other lines
-	// If each data is separated to new line, use rwNewLine
-	// If there's only 1 line for all data use rwSpace
+	// If each books is separated to new line, use rwNewLine
+	// If there's only 1 line for all books use rwSpace
 	// Like in 2020 pizza practice problem is using rwSpace
 	// Ex: 2 3 4 5 6
 	// In 2019 slide show qualification problem is using rwNewLine.
@@ -40,12 +40,12 @@ const (
 	// V 3 dog green garden
 	readOtherLines = rwNewLine
 
-	// What is the delimiter for separating data when writing to new line
-	// Use rwNewLine if data is separated by new line
+	// What is the delimiter for separating books when writing to new line
+	// Use rwNewLine if books is separated by new line
 	// Like in 2020 pizza practice problem is using rwSpace. Ex: 2 3 4 5 6 7
 	writeOtherLines = rwNewLine
 
-	// Starting ID for problem data struct
+	// Starting ID for problem books struct
 	// Ex: Photos in 2019 qualification problem, type of pizzas in 2020 practice problem
 	startID = 0
 )
@@ -58,7 +58,7 @@ var endlessRun bool
 // Ex: var nrOfPhotos int - Number of photos in the dataset file
 type problem struct {
 	// DEFAULT
-	data              []problemData
+	books             []book
 	libraries         []library
 	answers           []answer
 	score             int
@@ -66,27 +66,24 @@ type problem struct {
 	filePath          string
 
 	// PROBLEM SPECIFIC FIELDS
-	nrOfBooks      int
-	nrOfLibraries  int
-	nrOfDays       int
-	uniqueBooks    map[int]struct{}
-	uniqueBooksDay map[int]struct{}
-	lastDay        int
-	maxScore       int
+	nrOfBooks     int
+	nrOfLibraries int
+	nrOfDays      int
+	lastDay       int
+	maxScore      int
 }
 
-// Struct for the data
+// Struct for the books
 // Ex: var nrOfTags - Number of tags in photo with ID 3
 // books
-type problemData struct {
+type book struct {
 	// DEFAULT
 	ID       int
 	assigned bool
 
 	// PROBLEM SPECIFIC FIELDS
-	score           int
-	frequency       int
-	scoreWFrequency int
+	score     int
+	frequency int
 }
 
 type library struct {
@@ -94,15 +91,15 @@ type library struct {
 	nrOfBooks      int
 	signUpDuration int
 	shipPerDay     int
-	books          []*problemData
+	books          []*book
 	booksHash      map[int]struct{}
 	assigned       bool
 	maxScore       int
 }
 
-// Struct to store per data for the final answer
+// Struct to store per books for the final answer
 // Ex: type answer struct {
-//          data problemData
+//          books book
 // 	   }
 //
 // *Note - This is a slice in the problem struct above
@@ -110,7 +107,7 @@ type library struct {
 type answer struct {
 	*library
 	signUpEndDay int
-	booksAns     []*problemData
+	booksAns     []*book
 }
 
 func init() {
@@ -136,7 +133,7 @@ func main() {
 	datasets += "A"
 	datasets += "B"
 	datasets += "C"
-	// datasets += "D"
+	datasets += "D"
 	datasets += "E"
 	datasets += "F"
 
@@ -177,7 +174,7 @@ func main() {
 
 // Main flow of program per dataset
 func runDataSet(filePath string) {
-	// Read data from the file path and return to p as problem struct
+	// Read books from the file path and return to p as problem struct
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
@@ -202,19 +199,19 @@ func runDataSet(filePath string) {
 
 // Execute endless run
 func runEndless(filePath string) {
-	// Read data from the file path and return to p as problem struct
+	// Read books from the file path and return to p as problem struct
 	// Remember to update readFirstLine() and readData()
 	p := readFile(filePath)
 
-	for k := range p.data {
-		p.maxScore += p.data[k].score
+	for k := range p.books {
+		p.maxScore += p.books[k].score
 	}
 
 	for p.score != p.maxScore {
 		p.answers = nil
-		p.uniqueBooks = make(map[int]struct{})
-		for k := range p.data {
-			p.data[k].assigned = false
+
+		for k := range p.books {
+			p.books[k].assigned = false
 		}
 		for k := range p.libraries {
 			p.libraries[k].assigned = false
