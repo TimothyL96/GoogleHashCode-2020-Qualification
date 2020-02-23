@@ -5,6 +5,14 @@ import (
 	"sync"
 )
 
+// Best known score:
+// A - 21
+// B - 5,822,900
+// C - 5,690,870
+// D - 5,107,115
+// E - 5,237,345
+// F - 5,348,248
+
 const (
 	// Path for source code and such, should be updated before competition start
 	// Always add a slash '\\' behind directory
