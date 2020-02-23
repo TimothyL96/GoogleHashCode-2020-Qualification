@@ -67,6 +67,6 @@ func (d *library) readData(dataInput []InputString, reader *Reader, p *problem) 
 	reader.ReadNextData(readOtherLines[0])
 	errorCheck(reader.Err)
 	for k := range reader.Data {
-		d.books = append(d.books, &p.books[reader.Data[k].GetInt()])
+		d.books = append(d.books, p.books[reader.Data[k].GetInt()])
 	}
 }

@@ -91,7 +91,7 @@ type library struct {
 	nrOfBooks      int
 	signUpDuration int
 	shipPerDay     int
-	books          []*book
+	books          []book
 	booksHash      map[int]struct{}
 	assigned       bool
 	maxScore       int
@@ -107,7 +107,7 @@ type library struct {
 type answer struct {
 	*library
 	signUpEndDay int
-	booksAns     []*book
+	booksAns     []book
 }
 
 func init() {
@@ -130,11 +130,11 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	datasets += "A"
+	// datasets += "A"
 	datasets += "B"
 	datasets += "C"
-	datasets += "D"
-	datasets += "E"
+	// datasets += "D"
+	// datasets += "E"
 	datasets += "F"
 
 	// **************** //
