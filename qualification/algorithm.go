@@ -14,7 +14,7 @@ import (
 // 	return p.books[i].ID < p.books[j].ID
 // })
 //
-func (p *problem) algorithm1(libs []library, maxScore int, ans []answer, days int, uniqueBooks map[int]struct{}) {
+func (p *problem) algorithm1() {
 
 }
 
@@ -22,17 +22,67 @@ func (p *problem) algorithm1(libs []library, maxScore int, ans []answer, days in
 // Simulated annealing
 func (p *problem) algorithm2() {
 	// Set initial temperature
+	var tempStart float64 = 20000
+	var tempStart1 float64 = 20000
+
 	// Set cooling rate
+	// coolingRate := 0.005
+	coolingRate := 0.003
+
 	// Generate initial generation
+	firstGen := p.generateIndividual()
+
+	// Set as best generation
+	bestGen := firstGen
+	bestGenScore := p.calcScoreBase(firstGen)
 
 	// while temperature still larger than 1
-	// Duplicate population, and perform random swap
-	// Calculate energy/score
-	// Decide if we should accept with acceptance probability
-	// Record new population if score better than previous
-	// Cool the temperature
-	p.answers = p.generateIndividual()
-	fmt.Println("New individual score:", p.calcScoreBase(p.answers))
+	for tempStart > 1 {
+		// Duplicate population
+		secondGen := make([]answer, len(firstGen))
+		copy(secondGen, firstGen)
+
+		// Perform random swap of libraries
+		rand.Seed(time.Now().UnixNano())
+		rand1 := rand.Intn(len(secondGen))
+		rand2 := rand.Intn(len(secondGen))
+		ans := secondGen[rand1]
+		secondGen[rand1] = secondGen[rand2]
+		secondGen[rand2] = ans
+
+		// Recalculate library end time
+		secondGen = p.recalculateLibrary(secondGen)
+
+		// Reassign books
+		secondGen = p.assignBooks(secondGen)
+
+		// Calculate energy/score
+		firstScore := p.calcScoreBase(firstGen)
+		secondScore := p.calcScoreBase(secondGen)
+
+		// Decide if we should accept with acceptance probability
+		rand.Seed(time.Now().UnixNano())
+		x := (tempStart / tempStart1) / 2
+		// x := rand.Float64()
+		y := acceptanceProbability(firstScore, secondScore, tempStart)
+
+		if y < x {
+			firstGen = secondGen
+		}
+
+		// Record new population if score better than previous
+		if firstScore > bestGenScore {
+			bestGen = secondGen
+			bestGenScore = firstScore
+		}
+
+		// Cool the temperature
+		tempStart *= 1 - coolingRate
+	}
+
+	// Print result of best generation
+	fmt.Println("Best generation of", p.filePath, "has a score of:", p.calcScoreBase(bestGen))
+	p.answers = bestGen
 }
 
 // Calculate acceptance probability
@@ -41,7 +91,10 @@ func acceptanceProbability(energy, newEnergy int, temperature float64) float64 {
 		return 1
 	}
 
-	return math.Exp2(float64(newEnergy-energy) / temperature)
+	// fmt.Println(energy, newEnergy, temperature)
+	// fmt.Println("Acceptance probability:", math.Exp(float64(newEnergy-energy)/temperature), "************")
+	// return math.Exp(float64(newEnergy-energy) / temperature)
+	return math.Exp(float64(newEnergy-energy)/temperature) / 1
 }
 
 // Generate individuals
@@ -64,6 +117,13 @@ func (p *problem) generateIndividual() (newAns []answer) {
 		}
 	}
 
+	// Assign books in the assigned libraries
+	newAns = p.assignBooks(newAns)
+
+	return
+}
+
+func (p *problem) assignBooks(newAns []answer) []answer {
 	// Store ID of assigned books
 	plannedBooks := make(map[int]struct{})
 
@@ -77,6 +137,9 @@ func (p *problem) generateIndividual() (newAns []answer) {
 			newAns[k].books[i], newAns[k].books[j] = newAns[k].books[j], newAns[k].books[i]
 		})
 
+		// Reset book answer
+		newAns[k].booksAns = []book{}
+
 		// Assign books
 		for j := range newAns[k].books {
 			if _, ok := plannedBooks[newAns[k].books[j].ID]; !ok && allowedBooks > 0 {
@@ -87,7 +150,18 @@ func (p *problem) generateIndividual() (newAns []answer) {
 		}
 	}
 
-	return
+	return newAns
+}
+
+func (p *problem) recalculateLibrary(newAns []answer) []answer {
+	lastDay := 0
+
+	for k := range newAns {
+		lastDay += newAns[k].signUpDuration
+		newAns[k].signUpEndDay = lastDay
+	}
+
+	return newAns
 }
 
 // Endless algorithm till max reached or interrupt signalled
