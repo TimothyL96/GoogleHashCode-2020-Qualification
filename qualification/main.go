@@ -113,7 +113,7 @@ type library struct {
 // *Note - This is a slice in the problem struct above
 // Slice inside this answer struct should be avoided if unnecessary
 type answer struct {
-	*library
+	library
 	signUpEndDay int
 	booksAns     []book
 }
@@ -138,12 +138,12 @@ func main() {
 	// Uncomment any dataset that you'll want to run concurrently and vice versa
 	// **************** //
 
-	// datasets += "A"
+	datasets += "A"
 	datasets += "B"
-	datasets += "C"
+	// datasets += "C"
 	// datasets += "D"
 	// datasets += "E"
-	datasets += "F"
+	// datasets += "F"
 
 	// **************** //
 	// For more datasets, simply add new line above as needed, according to first character of dataset file

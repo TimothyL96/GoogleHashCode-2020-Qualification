@@ -1,7 +1,10 @@
 package main
 
 import (
-	"sort"
+	"fmt"
+	"math"
+	"math/rand"
+	"time"
 )
 
 // Main algorithm
@@ -12,49 +15,79 @@ import (
 // })
 //
 func (p *problem) algorithm1(libs []library, maxScore int, ans []answer, days int, uniqueBooks map[int]struct{}) {
-	if len(libs) == 0 {
-		if maxScore > p.score {
-			p.answers = ans
-			p.calcScore()
-		}
 
-		return
-	}
-
-	for k := range libs {
-		if libs[k].signUpDuration+days <= p.nrOfDays {
-			newAns := answer{library: &libs[k]}
-			maxBooks := (p.nrOfDays - (libs[k].signUpDuration + days)) * libs[k].shipPerDay
-			for j := range libs[k].books {
-				if _, ok := uniqueBooks[libs[k].books[j].ID]; !ok && maxBooks > 0 {
-					maxScore += libs[k].books[j].score
-					newAns.booksAns = append(newAns.booksAns, libs[k].books[j])
-					uniqueBooks[libs[k].books[j].ID] = struct{}{}
-					maxBooks--
-				}
-			}
-			ans = append(ans, newAns)
-
-			uniqueBooksNew := make(map[int]struct{})
-			for j := range uniqueBooks {
-				uniqueBooksNew[j] = struct{}{}
-			}
-
-			p.algorithm1(libs[k+1:], maxScore, ans, days+libs[k].signUpDuration, uniqueBooksNew)
-		}
-		p.algorithm1(libs[k+1:], maxScore, ans, days, uniqueBooks)
-	}
 }
 
 // Secondary algorithm
-//
+// Simulated annealing
 func (p *problem) algorithm2() {
-	for k := range p.libraries {
-		sort.Slice(p.libraries[k].books, func(i, j int) bool {
-			return p.libraries[k].books[i].score > p.libraries[k].books[j].score
-		})
+	// Set initial temperature
+	// Set cooling rate
+	// Generate initial generation
+
+	// while temperature still larger than 1
+	// Duplicate population, and perform random swap
+	// Calculate energy/score
+	// Decide if we should accept with acceptance probability
+	// Record new population if score better than previous
+	// Cool the temperature
+	p.answers = p.generateIndividual()
+	fmt.Println("New individual score:", p.calcScoreBase(p.answers))
+}
+
+// Calculate acceptance probability
+func acceptanceProbability(energy, newEnergy int, temperature float64) float64 {
+	if newEnergy > energy {
+		return 1
 	}
-	p.algorithm1(p.libraries, 0, []answer{}, 0, make(map[int]struct{}))
+
+	return math.Exp2(float64(newEnergy-energy) / temperature)
+}
+
+// Generate individuals
+func (p *problem) generateIndividual() (newAns []answer) {
+	// Shuffle libraries
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(p.libraries), func(i, j int) {
+		p.libraries[i], p.libraries[j] = p.libraries[j], p.libraries[i]
+	})
+
+	// Assign libraries
+	lastDay := 0
+
+	for k := range p.libraries {
+		if lastDay+p.libraries[k].signUpDuration <= p.nrOfDays {
+			lastDay += p.libraries[k].signUpDuration
+			newAns = append(newAns, answer{
+				library:      p.libraries[k],
+				signUpEndDay: lastDay})
+		}
+	}
+
+	// Store ID of assigned books
+	plannedBooks := make(map[int]struct{})
+
+	// Assign books for the assigned libraries
+	for k := range newAns {
+		// Get number of books allowed to be shipped by this library
+		allowedBooks := (p.nrOfDays - newAns[k].signUpEndDay) * newAns[k].shipPerDay
+
+		// Shuffle books as well
+		rand.Shuffle(len(newAns[k].books), func(i, j int) {
+			newAns[k].books[i], newAns[k].books[j] = newAns[k].books[j], newAns[k].books[i]
+		})
+
+		// Assign books
+		for j := range newAns[k].books {
+			if _, ok := plannedBooks[newAns[k].books[j].ID]; !ok && allowedBooks > 0 {
+				plannedBooks[newAns[k].books[j].ID] = struct{}{}
+				newAns[k].booksAns = append(newAns[k].booksAns, newAns[k].books[j])
+				allowedBooks--
+			}
+		}
+	}
+
+	return
 }
 
 // Endless algorithm till max reached or interrupt signalled
